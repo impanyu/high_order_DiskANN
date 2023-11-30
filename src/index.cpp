@@ -1176,10 +1176,10 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
 
     }
 
-    // push each node of MST to result
+    // push the node in first layer to result
     for (auto iter = pool.begin();  iter != pool.end(); ++iter)
     {
-        if (MST.find(iter->id) != MST.end()){
+        if (layer[iter->id] == 1){
             result.push_back(iter->id);
         }
     }
