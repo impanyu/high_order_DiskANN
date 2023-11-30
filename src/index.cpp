@@ -1127,6 +1127,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     occlude_factor.insert(occlude_factor.end(), pool.size(), 0.0f);
 
     float cur_alpha = 1;
+    
     while (cur_alpha <= alpha && result.size() < degree)
     {
         // used for MIPS, where we store a value of eps in cur_alpha to
