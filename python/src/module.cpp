@@ -47,7 +47,7 @@ template <typename T> inline void add_variant(py::module_ &m, const Variant &var
           "num_threads"_a, "pq_disk_bytes"_a);
 
     m.def(variant.memory_builder_name.c_str(), &diskannpy::build_memory_index<T>, "distance_metric"_a,
-          "data_file_path"_a, "index_output_path"_a, "graph_degree"_a, "complexity"_a, "alpha"_a, "num_threads"_a,
+          "data_file_path"_a, "index_output_path"_a, "graph_degree"_a, "complexity"_a, "alpha"_a, "alphas"_a,"num_threads"_a,
           "use_pq_build"_a, "num_pq_bytes"_a, "use_opq"_a, "use_tags"_a = false, "filter_labels_file"_a = "",
           "universal_label"_a = "", "filter_complexity"_a = 0);
 
@@ -68,7 +68,9 @@ template <typename T> inline void add_variant(py::module_ &m, const Variant &var
                       const uint32_t, const bool>(),
              "distance_metric"_a, "dimensions"_a, "max_vectors"_a, "complexity"_a, "graph_degree"_a,
              "saturate_graph"_a = diskann::defaults::SATURATE_GRAPH,
-             "max_occlusion_size"_a = diskann::defaults::MAX_OCCLUSION_SIZE, "alpha"_a = diskann::defaults::ALPHA,
+             "max_occlusion_size"_a = diskann::defaults::MAX_OCCLUSION_SIZE, 
+             "alpha"_a = diskann::defaults::ALPHA,
+             "alphas"_a = diskann::defaults::ALPHAS,
              "num_threads"_a = diskann::defaults::NUM_THREADS,
              "filter_complexity"_a = diskann::defaults::FILTER_LIST_SIZE,
              "num_frozen_points"_a = diskann::defaults::NUM_FROZEN_POINTS_DYNAMIC, "initial_search_complexity"_a = 0,
@@ -112,6 +114,8 @@ PYBIND11_MODULE(_diskannpy, m)
         "investigate their meaning and adjust them for your use cases.");
 
     default_values.attr("ALPHA") = diskann::defaults::ALPHA;
+    default_values.attr("ALPHAS") = diskann::defaults::ALPHAS;
+
     default_values.attr("NUM_THREADS") = diskann::defaults::NUM_THREADS;
     default_values.attr("MAX_OCCLUSION_SIZE") = diskann::defaults::MAX_OCCLUSION_SIZE;
     default_values.attr("FILTER_COMPLEXITY") = diskann::defaults::FILTER_LIST_SIZE;

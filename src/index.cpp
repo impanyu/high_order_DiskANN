@@ -109,6 +109,7 @@ Index<T, TagT, LabelT>::Index(const IndexConfig &index_config, std::unique_ptr<A
         _indexingRange = index_config.index_write_params->max_degree;
         _indexingMaxC = index_config.index_write_params->max_occlusion_size;
         _indexingAlpha = index_config.index_write_params->alpha;
+        _indexingAlphas = index_config.index_write_params->alphas;
         _filterIndexingQueueSize = index_config.index_write_params->filter_list_size;
         _indexingThreads = index_config.index_write_params->num_threads;
         _saturate_graph = index_config.index_write_params->saturate_graph;
@@ -1131,8 +1132,9 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     // Initialize occlude_factor to pool.size() many 0.0f values for correctness
     occlude_factor.insert(occlude_factor.end(), pool.size(), 0.0f);
 
-    float cur_alpha = 1;
+    //float cur_alpha = 1;
     std::vector<float> alphas(4, 1);
+    alphas = _indexingAlphas;
 
     std::unordered_map<uint32_t,float> C;
     std::unordered_map<uint32_t,float> E;

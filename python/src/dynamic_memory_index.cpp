@@ -11,7 +11,9 @@ namespace diskannpy
 
 diskann::IndexWriteParameters dynamic_index_write_parameters(const uint32_t complexity, const uint32_t graph_degree,
                                                              const bool saturate_graph,
-                                                             const uint32_t max_occlusion_size, const float alpha,
+                                                             const uint32_t max_occlusion_size, 
+                                                             const float alpha,
+                                                             std:vector<float> alphas,
                                                              const uint32_t num_threads,
                                                              const uint32_t filter_complexity)
 {
@@ -19,6 +21,7 @@ diskann::IndexWriteParameters dynamic_index_write_parameters(const uint32_t comp
         .with_saturate_graph(saturate_graph)
         .with_max_occlusion_size(max_occlusion_size)
         .with_alpha(alpha)
+        .with_alphas(alphas)
         .with_num_threads(num_threads)
         .with_filter_list_size(filter_complexity)
         .build();
@@ -50,13 +53,13 @@ template <class DT>
 DynamicMemoryIndex<DT>::DynamicMemoryIndex(const diskann::Metric m, const size_t dimensions, const size_t max_vectors,
                                            const uint32_t complexity, const uint32_t graph_degree,
                                            const bool saturate_graph, const uint32_t max_occlusion_size,
-                                           const float alpha, const uint32_t num_threads,
+                                           const float alpha, std:vector<float> alphas, const uint32_t num_threads,
                                            const uint32_t filter_complexity, const uint32_t num_frozen_points,
                                            const uint32_t initial_search_complexity,
                                            const uint32_t initial_search_threads, const bool concurrent_consolidation)
     : _initial_search_complexity(initial_search_complexity != 0 ? initial_search_complexity : complexity),
       _write_parameters(dynamic_index_write_parameters(complexity, graph_degree, saturate_graph, max_occlusion_size,
-                                                       alpha, num_threads, filter_complexity)),
+                                                       alpha, alphas, num_threads, filter_complexity)),
       _index(dynamic_index_builder<DT>(m, _write_parameters, dimensions, max_vectors, _initial_search_complexity,
                                        initial_search_threads, concurrent_consolidation, num_frozen_points))
 {

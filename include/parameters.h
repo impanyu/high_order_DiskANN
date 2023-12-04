@@ -21,12 +21,13 @@ class IndexWriteParameters
     const bool saturate_graph;
     const uint32_t max_occlusion_size; // C
     const float alpha;
+    std:vector<float>& alphas;
     const uint32_t num_threads;
     const uint32_t filter_list_size; // Lf
 
   private:
     IndexWriteParameters(const uint32_t search_list_size, const uint32_t max_degree, const bool saturate_graph,
-                         const uint32_t max_occlusion_size, const float alpha, const uint32_t num_threads,
+                         const uint32_t max_occlusion_size, const float alpha,std:vector<float>& alphas, const uint32_t num_threads,
                          const uint32_t filter_list_size)
         : search_list_size(search_list_size), max_degree(max_degree), saturate_graph(saturate_graph),
           max_occlusion_size(max_occlusion_size), alpha(alpha), num_threads(num_threads),
@@ -80,6 +81,12 @@ class IndexWriteParametersBuilder
         return *this;
     }
 
+    IndexWriteParametersBuilder &with_alphas(std:vector<float>& alphas)
+    {
+        _alphas = alphas;
+        return *this;
+    }
+
     IndexWriteParametersBuilder &with_num_threads(const uint32_t num_threads)
     {
         _num_threads = num_threads == 0 ? omp_get_num_procs() : num_threads;
@@ -94,13 +101,13 @@ class IndexWriteParametersBuilder
 
     IndexWriteParameters build() const
     {
-        return IndexWriteParameters(_search_list_size, _max_degree, _saturate_graph, _max_occlusion_size, _alpha,
+        return IndexWriteParameters(_search_list_size, _max_degree, _saturate_graph, _max_occlusion_size, _alpha,_alphas,
                                     _num_threads, _filter_list_size);
     }
 
     IndexWriteParametersBuilder(const IndexWriteParameters &wp)
         : _search_list_size(wp.search_list_size), _max_degree(wp.max_degree),
-          _max_occlusion_size(wp.max_occlusion_size), _saturate_graph(wp.saturate_graph), _alpha(wp.alpha),
+          _max_occlusion_size(wp.max_occlusion_size), _saturate_graph(wp.saturate_graph), _alpha(wp.alpha),_alphas(wp.alphas),
           _filter_list_size(wp.filter_list_size)
     {
     }
@@ -113,6 +120,7 @@ class IndexWriteParametersBuilder
     uint32_t _max_occlusion_size{defaults::MAX_OCCLUSION_SIZE};
     bool _saturate_graph{defaults::SATURATE_GRAPH};
     float _alpha{defaults::ALPHA};
+    float _alphas{defaults::ALPHAS};
     uint32_t _num_threads{defaults::NUM_THREADS};
     uint32_t _filter_list_size{defaults::FILTER_LIST_SIZE};
 };

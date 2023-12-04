@@ -387,6 +387,7 @@ template <typename T, typename TagT = uint32_t, typename LabelT = uint32_t> clas
     uint32_t _indexingRange;
     uint32_t _indexingMaxC;
     float _indexingAlpha;
+    std:vector<float> _indexingAlphas;
     uint32_t _indexingThreads;
 
     // Query scratch data structures
