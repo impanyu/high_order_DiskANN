@@ -21,7 +21,7 @@ class IndexWriteParameters
     const bool saturate_graph;
     const uint32_t max_occlusion_size; // C
     const float alpha;
-    std::vector<float>& alphas;
+    std::vector<float> alphas;
     const uint32_t num_threads;
     const uint32_t filter_list_size; // Lf
 
