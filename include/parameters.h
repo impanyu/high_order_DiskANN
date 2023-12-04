@@ -120,7 +120,7 @@ class IndexWriteParametersBuilder
     uint32_t _max_occlusion_size{defaults::MAX_OCCLUSION_SIZE};
     bool _saturate_graph{defaults::SATURATE_GRAPH};
     float _alpha{defaults::ALPHA};
-    float _alphas{defaults::ALPHAS};
+    std::vector<float> _alphas{defaults::ALPHAS};
     uint32_t _num_threads{defaults::NUM_THREADS};
     uint32_t _filter_list_size{defaults::FILTER_LIST_SIZE};
 };
