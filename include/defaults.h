@@ -9,7 +9,7 @@ namespace diskann
 namespace defaults
 {
 const float ALPHA = 1.2f;
-const std::vector<float> ALPHAS = {1f, 1f, 1f, 1f};
+const std::vector<float> ALPHAS = {1.0f, 1.0f, 1.0f, 1.0f};
 const uint32_t NUM_THREADS = 0;
 const uint32_t MAX_OCCLUSION_SIZE = 750;
 const bool HAS_LABELS = false;
