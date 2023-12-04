@@ -27,7 +27,7 @@ class IndexWriteParameters
 
   private:
     IndexWriteParameters(const uint32_t search_list_size, const uint32_t max_degree, const bool saturate_graph,
-                         const uint32_t max_occlusion_size, const float alpha,std::vector<float>& alphas, const uint32_t num_threads,
+                         const uint32_t max_occlusion_size, const float alpha,const std::vector<float>& alphas, const uint32_t num_threads,
                          const uint32_t filter_list_size)
         : search_list_size(search_list_size), max_degree(max_degree), saturate_graph(saturate_graph),
           max_occlusion_size(max_occlusion_size), alpha(alpha), num_threads(num_threads),
