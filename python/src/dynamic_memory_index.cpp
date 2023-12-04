@@ -13,7 +13,7 @@ diskann::IndexWriteParameters dynamic_index_write_parameters(const uint32_t comp
                                                              const bool saturate_graph,
                                                              const uint32_t max_occlusion_size, 
                                                              const float alpha,
-                                                             const std:vector<float> alphas,
+                                                             const std::vector<float> alphas,
                                                              const uint32_t num_threads,
                                                              const uint32_t filter_complexity)
 {
