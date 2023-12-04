@@ -58,7 +58,7 @@ template std::string prepare_filtered_label_map<uint8_t>(diskann::Index<uint8_t,
 template <typename T, typename TagT, typename LabelT>
 void build_memory_index(const diskann::Metric metric, const std::string &vector_bin_path,
                         const std::string &index_output_path, const uint32_t graph_degree, const uint32_t complexity,
-                        const float alpha, std::vector<float>& alphas, const uint32_t num_threads, const bool use_pq_build,
+                        const float alpha, const std::vector<float>& alphas, const uint32_t num_threads, const bool use_pq_build,
                         const size_t num_pq_bytes, const bool use_opq, const bool use_tags,
                         const std::string &filter_labels_file, const std::string &universal_label,
                         const uint32_t filter_complexity)

@@ -13,7 +13,7 @@ diskann::IndexWriteParameters dynamic_index_write_parameters(const uint32_t comp
                                                              const bool saturate_graph,
                                                              const uint32_t max_occlusion_size, 
                                                              const float alpha,
-                                                             std:vector<float> alphas,
+                                                             const std:vector<float> alphas,
                                                              const uint32_t num_threads,
                                                              const uint32_t filter_complexity)
 {
@@ -53,7 +53,7 @@ template <class DT>
 DynamicMemoryIndex<DT>::DynamicMemoryIndex(const diskann::Metric m, const size_t dimensions, const size_t max_vectors,
                                            const uint32_t complexity, const uint32_t graph_degree,
                                            const bool saturate_graph, const uint32_t max_occlusion_size,
-                                           const float alpha, std::vector<float> alphas, const uint32_t num_threads,
+                                           const float alpha, const std::vector<float> alphas, const uint32_t num_threads,
                                            const uint32_t filter_complexity, const uint32_t num_frozen_points,
                                            const uint32_t initial_search_complexity,
                                            const uint32_t initial_search_threads, const bool concurrent_consolidation)

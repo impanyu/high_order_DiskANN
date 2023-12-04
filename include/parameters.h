@@ -81,7 +81,7 @@ class IndexWriteParametersBuilder
         return *this;
     }
 
-    IndexWriteParametersBuilder &with_alphas(std::vector<float>& alphas)
+    IndexWriteParametersBuilder &with_alphas(const std::vector<float>& alphas)
     {
         _alphas = alphas;
         return *this;
