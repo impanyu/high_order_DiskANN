@@ -8,6 +8,8 @@
 
 #include "omp.h"
 #include "defaults.h"
+#include <vector>
+
 
 namespace diskann
 {
