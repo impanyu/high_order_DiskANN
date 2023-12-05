@@ -120,15 +120,15 @@ void build_memory_index(const diskann::Metric metric, const std::string &vector_
 }
 
 template void build_memory_index<float>(diskann::Metric, const std::string &, const std::string &, uint32_t, uint32_t,
-                                        float, std::vector<float>,uint32_t, bool, size_t, bool, bool, const std::string &,
+                                        float, std::vector<float>&,uint32_t, bool, size_t, bool, bool, const std::string &,
                                         const std::string &, uint32_t);
 
 template void build_memory_index<int8_t>(diskann::Metric, const std::string &, const std::string &, uint32_t, uint32_t,
-                                         float,std::vector<float>, uint32_t, bool, size_t, bool, bool, const std::string &,
+                                         float,std::vector<float>&, uint32_t, bool, size_t, bool, bool, const std::string &,
                                          const std::string &, uint32_t);
 
 template void build_memory_index<uint8_t>(diskann::Metric, const std::string &, const std::string &, uint32_t, uint32_t,
-                                          float, std::vector<float>,uint32_t, bool, size_t, bool, bool, const std::string &,
+                                          float, std::vector<float>&,uint32_t, bool, size_t, bool, bool, const std::string &,
                                           const std::string &, uint32_t);
 
 } // namespace diskannpy
