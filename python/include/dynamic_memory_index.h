@@ -23,7 +23,7 @@ class DynamicMemoryIndex
 {
   public:
     DynamicMemoryIndex(diskann::Metric m, size_t dimensions, size_t max_vectors, uint32_t complexity,
-                       uint32_t graph_degree, bool saturate_graph, uint32_t max_occlusion_size, float alpha,
+                       uint32_t graph_degree, bool saturate_graph, uint32_t max_occlusion_size, float alpha,std::vector<float> alphas,
                        uint32_t num_threads, uint32_t filter_complexity, uint32_t num_frozen_points,
                        uint32_t initial_search_complexity, uint32_t initial_search_threads,
                        bool concurrent_consolidation);
