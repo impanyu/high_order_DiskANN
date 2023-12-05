@@ -64,7 +64,7 @@ template <typename T> inline void add_variant(py::module_ &m, const Variant &var
 
     py::class_<diskannpy::DynamicMemoryIndex<T>>(m, variant.dynamic_memory_index_name.c_str())
         .def(py::init<const diskann::Metric, const size_t, const size_t, const uint32_t, const uint32_t, const bool,
-                      const uint32_t, const float, const uint32_t, const uint32_t, const uint32_t, const uint32_t,
+                      const uint32_t, const float, const std::vector<float>,const uint32_t, const uint32_t, const uint32_t, const uint32_t,
                       const uint32_t, const bool>(),
              "distance_metric"_a, "dimensions"_a, "max_vectors"_a, "complexity"_a, "graph_degree"_a,
              "saturate_graph"_a = diskann::defaults::SATURATE_GRAPH,
