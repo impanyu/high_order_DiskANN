@@ -1139,20 +1139,27 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     std::unordered_map<uint32_t,float> C;
     std::unordered_map<uint32_t,float> E;
     std::unordered_map<uint32_t,float> layer;
-
-    layer[location] = 0;
-    C[location] = 0;
-    E[location] = -1;
+    std::unordered_set<uint32_t> MST;
 
     //initialize C and E for MST
+    layer[-1] = -1; //dummy node id -1 has layer -1
+   
+    //MST.insert(location);
+
+    
     for (auto iter = pool.begin();  iter != pool.end(); ++iter){
-        C[iter->id] = _data_store->get_distance(iter->id, location);
-        E[iter->id] = location;
-        layer[iter->id] = -1;
+ 
+        C[iter->id] = std::numeric_limits<float>::max();//_data_store->get_distance(iter->id, location);
+        E[iter->id] = -1;
+        //layer[iter->id] = -1;
     }
+
+ 
+    C[location] = 0;
+    E[location] = -1;
     
 
-    std::unordered_set<uint32_t> MST;
+
     while(MST.size() < pool.size()){
 
         float min = std::numeric_limits<float>::max();
@@ -1166,6 +1173,9 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         MST.insert(min_id);
         layer[min_id] = layer[E[min_id]]+1;
 
+        if layer[min_id] == 3{
+            continue;
+        }
         //modify C and E based on current layer of min_id
         for (auto iter = pool.begin();  iter != pool.end(); ++iter){
             auto d = _data_store->get_distance(iter->id, min_id) * alphas[layer[min_id]];
