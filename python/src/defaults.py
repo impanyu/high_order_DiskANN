@@ -8,6 +8,7 @@ These parameter defaults are re-exported from the C++ extension module, and used
 from ._diskannpy import defaults as _defaults
 
 ALPHA = _defaults.ALPHA
+ALPHAS = _defaults.ALPHAS
 """ 
 Note that, as ALPHA is a `float32` (single precision float) in C++, when converted into Python it becomes a 
 `float64` (double precision float). The actual value is 1.2f. The alpha parameter (>=1) is used to control the nature 
