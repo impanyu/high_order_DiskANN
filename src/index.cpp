@@ -1137,30 +1137,32 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     alphas = _indexingAlphas;
 
     std::unordered_map<uint32_t,float> C;
-    std::unordered_map<uint32_t,float> E;
-    std::unordered_map<uint32_t,float> layer;
+    std::unordered_map<uint32_t,uint32_t> E;
+    std::unordered_map<uint32_t,uint32_t> layer;
     std::unordered_set<uint32_t> MST;
 
     //initialize C and E for MST
-    layer[-1] = -1; //dummy node id -1 has layer -1
+    
    
-    //MST.insert(location);
 
     
     for (auto iter = pool.begin();  iter != pool.end(); ++iter){
  
-        C[iter->id] = std::numeric_limits<float>::max();//_data_store->get_distance(iter->id, location);
-        E[iter->id] = -1;
-        //layer[iter->id] = -1;
+        C[iter->id] = _data_store->get_distance(iter->id, location);
+        E[iter->id] = location;
+        layer[iter->id] = 1;
     }
 
  
     C[location] = 0;
     E[location] = -1;
+    layer[location] = 0; 
+    MST.insert(location);
+   
     
 
 
-    while(MST.size() < pool.size()){
+    while(MST.size() < pool.size()+1){
 
         float min = std::numeric_limits<float>::max();
         uint32_t min_id = 0;
