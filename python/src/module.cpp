@@ -15,7 +15,7 @@
 #include "static_memory_index.h"
 
 PYBIND11_MAKE_OPAQUE(std::vector<uint32_t>);
-PYBIND11_MAKE_OPAQUE(std::vector<float>);
+//PYBIND11_MAKE_OPAQUE(std::vector<float>);
 PYBIND11_MAKE_OPAQUE(std::vector<int8_t>);
 PYBIND11_MAKE_OPAQUE(std::vector<uint8_t>);
 
