@@ -1173,7 +1173,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         MST.insert(min_id);
         layer[min_id] = layer[E[min_id]]+1;
 
-        if layer[min_id] == 3{
+        if(layer[min_id] == 3){
             continue;
         }
         //modify C and E based on current layer of min_id
