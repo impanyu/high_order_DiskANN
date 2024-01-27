@@ -1175,6 +1175,13 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         MST.insert(min_id);
         layer[min_id] = layer[E[min_id]]+1;
 
+        if(layer[min_id] == 1){
+            result.push_back(min_id);
+            if (result.size() >= degree){
+                break;
+            }
+        }
+
         if(layer[min_id] == 3){
             continue;
         }
@@ -1191,12 +1198,13 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     }
 
     // push the node in first layer to result
+    /*
     for (auto iter = pool.begin();  iter != pool.end(); ++iter)
     {
         if (layer[iter->id] == 1){
             result.push_back(iter->id);
         }
-    }
+    }*/
 
    
   
