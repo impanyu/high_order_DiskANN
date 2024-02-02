@@ -1133,13 +1133,24 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     occlude_factor.insert(occlude_factor.end(), pool.size(), 0.0f);
 
     //float cur_alpha = 1;
-    std::vector<float> alphas(4, 1);
-    alphas = _indexingAlphas;
+    alphas_length = 10;
+    std::vector<float> alphas(alphas_length, 1);
+  
+    //alphas = _indexingAlphas;
+
+    alpha[0] = 1;
+    alpha[1] = _indexingAlphas[0];
+    for (int i = 2; i < alphas_length; i++){
+        alpha[i] = alpha[i-1] * _indexingAlphas[1];
+    }
 
     std::unordered_map<uint32_t,float> C;
     std::unordered_map<uint32_t,uint32_t> E;
     std::unordered_map<uint32_t,uint32_t> layer;
     std::unordered_set<uint32_t> MST;
+
+    //std::priority_queue<float, std::vector<float>, std::greater<float>> C_pq;
+
 
     //initialize C and E for MST
     
@@ -1182,7 +1193,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             }
         }
 
-        if(layer[min_id] == 3){
+        if(layer[min_id] == alphas_length-1){
             continue;
         }
         //modify C and E based on current layer of min_id
