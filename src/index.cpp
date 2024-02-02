@@ -1133,7 +1133,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     occlude_factor.insert(occlude_factor.end(), pool.size(), 0.0f);
 
     //float cur_alpha = 1;
-    int alphas_length = 10;
+    int alphas_length = 4;
     std::vector<float> alphas(alphas_length, 1);
   
     //alphas = _indexingAlphas;
