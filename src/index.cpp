@@ -1138,10 +1138,10 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
   
     //alphas = _indexingAlphas;
 
-    alpha[0] = 1;
-    alpha[1] = _indexingAlphas[0];
+    alphas[0] = 1;
+    alphas[1] = _indexingAlphas[0];
     for (int i = 2; i < alphas_length; i++){
-        alpha[i] = alpha[i-1] * _indexingAlphas[1];
+        alphas[i] = alphas[i-1] * _indexingAlphas[1];
     }
 
     std::unordered_map<uint32_t,float> C;
