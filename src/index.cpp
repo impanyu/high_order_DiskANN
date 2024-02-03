@@ -1138,12 +1138,12 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
   
      alphas = _indexingAlphas;
 
-     alphas[0] = 1;
+     //alphas[0] = 1;
      /*for (float val : alphas) {
         std::cout << val << " ";
     }*/
-    std::cout<<alphas.size();
-    std::cout << std::endl;
+    //std::cout<<alphas.size();
+    //std::cout << std::endl;
     /*
     
      if(_indexingAlphas.size() > 0)
@@ -1204,13 +1204,10 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             }
         }
 
-        if(layer[min_id] == 2){
+        if(layer[min_id] == 3){
             continue;
         }
-           std::cout<<alphas.size()<<"here";
-           std::cout<<layer[min_id]<<"here";
-           std::cout<<alphas[0];
-           std::cout << std::endl;
+
         //modify C and E based on current layer of min_id
         for (auto iter = pool.begin();  iter != pool.end(); ++iter){
             auto d = _data_store->get_distance(iter->id, min_id) * alphas[layer[min_id]];
