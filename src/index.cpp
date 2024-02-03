@@ -1195,7 +1195,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             }
         }
 
-        if(layer[min_id] == 9){
+        if(layer[min_id] == 3){
             continue;
         }
         //modify C and E based on current layer of min_id
