@@ -1142,8 +1142,9 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
      for (float val : alphas) {
         std::cout << val << " ";
     }
-    /*
     std::cout << std::endl;
+    /*
+    
      if(_indexingAlphas.size() > 0)
         alphas[1] = _indexingAlphas[0];
     */
