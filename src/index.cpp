@@ -1136,15 +1136,16 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     int alphas_length = 10;
     std::vector<float> alphas(10, 1);
   
-    //alphas = _indexingAlphas;
+     alphas = _indexingAlphas;
 
-     alphas[0] = 1;
+     /*alphas[0] = 1;
      for (float val : _indexingAlphas) {
         std::cout << val << " ";
     }
     std::cout << std::endl;
      if(_indexingAlphas.size() > 0)
         alphas[1] = _indexingAlphas[0];
+    */
     /*for (int i = 2; i < 10; i++){
         alphas[i] = alphas[i-1] * _indexingAlphas[1];
     }*/
@@ -1200,7 +1201,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             }
         }
 
-        if(layer[min_id] == 3){
+        if(layer[min_id] == 1){
             continue;
         }
         //modify C and E based on current layer of min_id
