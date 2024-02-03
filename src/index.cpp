@@ -1209,7 +1209,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         }
            std::cout<<alphas.size()<<"here";
            std::cout<<layer[min_id]<<"here";
-           std::cout alphas[layer[min_id]];
+           std::cout<<alphas[layer[min_id]];
            std::cout << std::endl;
         //modify C and E based on current layer of min_id
         for (auto iter = pool.begin();  iter != pool.end(); ++iter){
