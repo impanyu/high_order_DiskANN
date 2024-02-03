@@ -1207,7 +1207,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         if(layer[min_id] == 2){
             continue;
         }
-           std::cout<<alphas.size();
+           std::cout<<alphas.size()<<"here";
            std::cout << std::endl;
         //modify C and E based on current layer of min_id
         for (auto iter = pool.begin();  iter != pool.end(); ++iter){
