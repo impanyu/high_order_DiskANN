@@ -1204,7 +1204,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             }
         }
 
-        if(layer[min_id] == alphas_length-1){
+        if(layer[min_id] == alphas_length){
             continue;
         }
 
