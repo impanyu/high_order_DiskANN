@@ -1117,7 +1117,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
                                           InMemQueryScratch<T> *scratch,
                                           const tsl::robin_set<uint32_t> *const delete_set_ptr)
 {
-    if (pool.size() == 0)
+       if (pool.size() == 0)
         return;
 
     // Truncate pool at maxc and initialize scratch spaces
@@ -1132,104 +1132,79 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     // Initialize occlude_factor to pool.size() many 0.0f values for correctness
     occlude_factor.insert(occlude_factor.end(), pool.size(), 0.0f);
 
-    //float cur_alpha = 1;
-    int alphas_length =  _indexingAlphas[1];
-    std::vector<float> alphas(alphas_length, 1);
-  
- 
-
-     
-     /*for (float val : alphas) {
-        std::cout << val << " ";
-    }*/
-    //std::cout<<alphas.size();
-    //std::cout << std::endl;
-    /*
-    
-     if(_indexingAlphas.size() > 0)
-        alphas[1] = _indexingAlphas[0];
-    */
-    for (int i = 1; i < alphas_length; i++){
-        alphas[i] = alphas[i-1] * _indexingAlphas[0];
-    }
-
-    
-
-    std::unordered_map<uint32_t,float> C;
-    std::unordered_map<uint32_t,uint32_t> E;
-    std::unordered_map<uint32_t,uint32_t> layer;
-    std::unordered_set<uint32_t> MST;
-
-    //std::priority_queue<float, std::vector<float>, std::greater<float>> C_pq;
-
-
-    //initialize C and E for MST
-    
-   
-
-    
-    for (auto iter = pool.begin();  iter != pool.end(); ++iter){
- 
-        C[iter->id] = _data_store->get_distance(iter->id, location);
-        E[iter->id] = location;
-        layer[iter->id] = 1;
-    }
-
- 
-    C[location] = 0;
-    E[location] = -1;
-    layer[location] = 0; 
-    MST.insert(location);
-   
-    
-
-
-    while(MST.size() < pool.size()+1){
-
-        float min = std::numeric_limits<float>::max();
-        uint32_t min_id = 0;
-        for (auto iter = pool.begin();  iter != pool.end(); ++iter){
-            if (MST.find(iter->id) == MST.end() && C[iter->id] < min){
-                min = C[iter->id];
-                min_id = iter->id;
-            }
-        }
-        MST.insert(min_id);
-        layer[min_id] = layer[E[min_id]]+1;
-
-        if(layer[min_id] == 1){
-            result.push_back(min_id);
-            if (result.size() >= degree){
-                break;
-            }
-        }
-
-        if(layer[min_id] == alphas_length){
-            continue;
-        }
-
-        //modify C and E based on current layer of min_id
-        for (auto iter = pool.begin();  iter != pool.end(); ++iter){
-            auto d = _data_store->get_distance(iter->id, min_id) * alphas[layer[min_id]];
-            if (MST.find(iter->id) == MST.end() && d < C[iter->id]){
-                C[iter->id] = d;
-                E[iter->id] = min_id;
-            }
-        }
-
-
-    }
-
-    // push the node in first layer to result
-    /*
-    for (auto iter = pool.begin();  iter != pool.end(); ++iter)
+    float cur_alpha = alpha;
+    while (cur_alpha <= alpha && result.size() < degree)
     {
-        if (layer[iter->id] == 1){
-            result.push_back(iter->id);
-        }
-    }*/
+        // used for MIPS, where we store a value of eps in cur_alpha to
+        // denote pruned out entries which we can skip in later rounds.
+        float eps = cur_alpha + 0.01f;
 
-   
+        for (auto iter = pool.begin(); result.size() < degree && iter != pool.end(); ++iter)
+        {
+            if (occlude_factor[iter - pool.begin()] > cur_alpha)
+            {
+                continue;
+            }
+            // Set the entry to float::max so that is not considered again
+            occlude_factor[iter - pool.begin()] = std::numeric_limits<float>::max();
+            // Add the entry to the result if its not been deleted, and doesn't
+            // add a self loop
+            if (delete_set_ptr == nullptr || delete_set_ptr->find(iter->id) == delete_set_ptr->end())
+            {
+                if (iter->id != location)
+                {
+                    result.push_back(iter->id);
+                }
+            }
+
+            // Update occlude factor for points from iter+1 to pool.end()
+            for (auto iter2 = iter + 1; iter2 != pool.end(); iter2++)
+            {
+                auto t = iter2 - pool.begin();
+                if (occlude_factor[t] > alpha)
+                    continue;
+
+                bool prune_allowed = true;
+                if (_filtered_index)
+                {
+                    uint32_t a = iter->id;
+                    uint32_t b = iter2->id;
+                    if (_location_to_labels.size() < b || _location_to_labels.size() < a)
+                        continue;
+                    for (auto &x : _location_to_labels[b])
+                    {
+                        if (std::find(_location_to_labels[a].begin(), _location_to_labels[a].end(), x) ==
+                            _location_to_labels[a].end())
+                        {
+                            prune_allowed = false;
+                        }
+                        if (!prune_allowed)
+                            break;
+                    }
+                }
+                if (!prune_allowed)
+                    continue;
+
+                float djk = _data_store->get_distance(iter2->id, iter->id);
+                if (_dist_metric == diskann::Metric::L2 || _dist_metric == diskann::Metric::COSINE)
+                {
+                    occlude_factor[t] = (djk == 0) ? std::numeric_limits<float>::max()
+                                                   : std::max(occlude_factor[t], iter2->distance / djk);
+                }
+                else if (_dist_metric == diskann::Metric::INNER_PRODUCT)
+                {
+                    // Improvization for flipping max and min dist for MIPS
+                    float x = -iter2->distance;
+                    float y = -djk;
+                    if (y > cur_alpha * x)
+                    {
+                        occlude_factor[t] = std::max(occlude_factor[t], eps);
+                    }
+                }
+            }
+        }
+        cur_alpha *= 1.2f;
+    }
   
 }
 
