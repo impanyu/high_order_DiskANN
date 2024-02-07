@@ -1194,11 +1194,14 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
                 min_id = iter->id;
             }
         }
+        if (min_id == location){
+            continue;
+        }
    
         MST.insert(min_id);
         layer[min_id] = layer[E[min_id]]+1;
 
-        if(layer[min_id] == 1 && min_id != location){
+        if(layer[min_id] == 1 ){
             result.push_back(min_id);
             if (result.size() >= degree){
                 break;
