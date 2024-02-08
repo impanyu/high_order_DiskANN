@@ -1216,9 +1216,10 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
 
         //modify C and E based on current layer of min_id
         for (auto iter = pool.begin();  iter != pool.end(); ++iter){
-            auto d = _data_store->get_distance(iter->id, min_id) * alphas[layer[min_id]];
+            auto d = _data_store->get_distance(iter->id, min_id) * alphas[layer[min_id]] + C[min_id];
+            d = d / (layer[min_id]+1);
             if (MST.find(iter->id) == MST.end() && d < C[iter->id]){
-                C[iter->id] = d;
+                C[iter->id] = d ;
                 E[iter->id] = min_id;
             }
         }
