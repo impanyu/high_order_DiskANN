@@ -1231,7 +1231,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
 
         }
         cur_alpha -= 0.05;
-    } while(cur_alpha >= 1 && result.size()>degree)
+    } while(cur_alpha >= 1 && result.size()>degree);
   /*
      if (result.size() > degree){
            std::shuffle(result.begin(), result.end(), std::default_random_engine());
