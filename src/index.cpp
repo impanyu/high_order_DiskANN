@@ -1205,9 +1205,9 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
 
         if(layer[min_id] == 1 ){
             result.push_back(min_id);
-           /* if (result.size() >= degree){
+            if (result.size() >= degree){
                 break;
-            }*/
+            }
         }
 
         if(layer[min_id] == alphas_length){
@@ -1225,11 +1225,12 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
 
 
     }
-
+  /*
      if (result.size() > degree){
            std::shuffle(result.begin(), result.end(), std::default_random_engine());
            result.resize(degree);
         }
+ */
 
     // push the node in first layer to result
     /*
