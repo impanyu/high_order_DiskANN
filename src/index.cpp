@@ -1151,8 +1151,12 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
      if(_indexingAlphas.size() > 0)
         alphas[1] = _indexingAlphas[0];
     */
+   float cur_alpha = _indexingAlphas[0];
+    do{
+
     for (int i = 1; i < alphas_length; i++){
-        alphas[i] = alphas[i-1] * _indexingAlphas[0];
+        //alphas[i] = alphas[i-1] * _indexingAlphas[0];
+        alphas[i] = alphas[i-1] * cur_alpha;
     }
 
     
@@ -1183,48 +1187,50 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     layer[location] = 0; 
     MST.insert(location);
    
+
     
 
+        while(MST.size() < pool.size()+1){
 
-    while(MST.size() < pool.size()+1){
-
-        float min = std::numeric_limits<float>::max();
-        uint32_t min_id = 0;
-        for (auto iter = pool.begin();  iter != pool.end(); ++iter){
-            if (MST.find(iter->id) == MST.end() && C[iter->id] < min){
-                min = C[iter->id];
-                min_id = iter->id;
+            float min = std::numeric_limits<float>::max();
+            uint32_t min_id = 0;
+            for (auto iter = pool.begin();  iter != pool.end(); ++iter){
+                if (MST.find(iter->id) == MST.end() && C[iter->id] < min){
+                    min = C[iter->id];
+                    min_id = iter->id;
+                }
             }
-        }
-        if (min_id == location){
-            continue;
-        }
-   
-        MST.insert(min_id);
-        layer[min_id] = layer[E[min_id]]+1;
-
-        if(layer[min_id] == 1 ){
-            result.push_back(min_id);
-            if (result.size() >= degree){
-                break;
+            if (min_id == location){
+                continue;
             }
-        }
+    
+            MST.insert(min_id);
+            layer[min_id] = layer[E[min_id]]+1;
 
-        if(layer[min_id] == alphas_length){
-            continue;
-        }
-
-        //modify C and E based on current layer of min_id
-        for (auto iter = pool.begin();  iter != pool.end(); ++iter){
-            auto d = _data_store->get_distance(iter->id, min_id) * alphas[layer[min_id]];
-            if (MST.find(iter->id) == MST.end() && d < C[iter->id]){
-                C[iter->id] = d;
-                E[iter->id] = min_id;
+            if(layer[min_id] == 1 ){
+                result.push_back(min_id);
+                /*if (result.size() >= degree){
+                    break;
+                }*/
             }
+
+            if(layer[min_id] == alphas_length){
+                continue;
+            }
+
+            //modify C and E based on current layer of min_id
+            for (auto iter = pool.begin();  iter != pool.end(); ++iter){
+                auto d = _data_store->get_distance(iter->id, min_id) * alphas[layer[min_id]];
+                if (MST.find(iter->id) == MST.end() && d < C[iter->id]){
+                    C[iter->id] = d;
+                    E[iter->id] = min_id;
+                }
+            }
+        
+
         }
-
-
-    }
+        cur_alpha -= 0.05;
+    } while(cur_alpha >= 1 && result.size()>degree)
   /*
      if (result.size() > degree){
            std::shuffle(result.begin(), result.end(), std::default_random_engine());
