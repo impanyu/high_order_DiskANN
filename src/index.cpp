@@ -1151,8 +1151,12 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
      if(_indexingAlphas.size() > 0)
         alphas[1] = _indexingAlphas[0];
     */
+    float cur_alpha = _indexingAlphas[0];
+    do{
+    result.clear();
+
     for (int i = 1; i < alphas_length; i++){
-        alphas[i] = alphas[i-1] * _indexingAlphas[0];
+        alphas[i] = alphas[i-1] * cur_alpha;
     }
 
     
@@ -1226,12 +1230,14 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
 
 
     }
+          cur_alpha -= 0.05;
+    } while(cur_alpha >= 1 && result.size()>degree);
 
-     if (result.size() > degree){
+    /* if (result.size() > degree){
            std::shuffle(result.begin(), result.end(), std::default_random_engine());
            result.resize(degree);
         }
-
+*/
     // push the node in first layer to result
     /*
     for (auto iter = pool.begin();  iter != pool.end(); ++iter)
