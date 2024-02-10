@@ -1600,6 +1600,10 @@ void Index<T, TagT, LabelT>::build_with_data_populated(const std::vector<TagT> &
     }
 
     generate_frozen_point();
+    last_round_alpha = _indexingAlpha[0];
+    _indexingAlpha[0] = 1;
+    link();
+    _indexingAlpha[0] = last_round_alpha;
     link();
 
     size_t max = 0, min = SIZE_MAX, total = 0, cnt = 0;
