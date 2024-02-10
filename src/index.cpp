@@ -1354,8 +1354,17 @@ template <typename T, typename TagT, typename LabelT> void Index<T, TagT, LabelT
     else
         _start = calculate_entry_point();
 
+    const unsigned NUM_RNDS = 2;
+    float last_round_alpha = _indexingAlpha[0];
+    _indexingAlpha[0] = 1;
     diskann::Timer link_timer;
 
+for (uint32_t rnd_no = 0; rnd_no < NUM_RNDS; rnd_no++) {
+
+    if rnd_no == NUM_RNDS - 1
+    {
+        _indexingAlpha[0] = last_round_alpha;
+    }
 #pragma omp parallel for schedule(dynamic, 2048)
     for (int64_t node_ctr = 0; node_ctr < (int64_t)(visit_order.size()); node_ctr++)
     {
@@ -1390,6 +1399,8 @@ template <typename T, typename TagT, typename LabelT> void Index<T, TagT, LabelT
                           << std::flush;
         }
     }
+
+}
 
     if (_nd > 0)
     {
@@ -1600,10 +1611,6 @@ void Index<T, TagT, LabelT>::build_with_data_populated(const std::vector<TagT> &
     }
 
     generate_frozen_point();
-    float last_round_alpha = _indexingAlpha[0];
-    _indexingAlpha[0] = 1;
-    link();
-    _indexingAlpha[0] = last_round_alpha;
     link();
 
     size_t max = 0, min = SIZE_MAX, total = 0, cnt = 0;
