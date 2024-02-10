@@ -1356,7 +1356,7 @@ template <typename T, typename TagT, typename LabelT> void Index<T, TagT, LabelT
 
     const unsigned NUM_RNDS = 2;
     float last_round_alpha = _indexingAlpha;
-    _indexingAlpha 1;
+    _indexingAlpha = 1;
     diskann::Timer link_timer;
 
 for (uint32_t rnd_no = 0; rnd_no < NUM_RNDS; rnd_no++) {
