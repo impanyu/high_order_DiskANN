@@ -1361,7 +1361,7 @@ template <typename T, typename TagT, typename LabelT> void Index<T, TagT, LabelT
 
 for (uint32_t rnd_no = 0; rnd_no < NUM_RNDS; rnd_no++) {
 
-    if rnd_no == NUM_RNDS - 1
+    if (rnd_no == NUM_RNDS - 1)
     {
         _indexingAlpha[0] = last_round_alpha;
     }
