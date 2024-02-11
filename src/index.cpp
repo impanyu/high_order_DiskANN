@@ -1139,9 +1139,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     std::vector<float> alphas(alphas_length, 1);
   
  
-
-     
-     /*for (float val : alphas) {
+    /*for (float val : alphas) {
         std::cout << val << " ";
     }*/
     //std::cout<<alphas.size();
@@ -1157,7 +1155,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
 
     for (int i = 1; i < alphas_length; i++){
         //alphas[i] = alphas[i-1] * _indexingAlphas[0];
-        alphas[i] = alphas[i-1] * cur_alpha;
+        alphas[i] =  cur_alpha;
     }
 
     
@@ -1188,10 +1186,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     layer[location] = 0; 
     MST.insert(location);
    
-
-    
-
-        while(MST.size() < pool.size()+1){
+    while(MST.size() < pool.size()+1){
 
             float min = std::numeric_limits<float>::max();
             uint32_t min_id = 0;
