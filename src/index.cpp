@@ -1230,7 +1230,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
    tmp_pool.clear();
    for(auto iter = result.begin(); iter != result.end(); ++iter){
        auto d = _data_store->get_distance(location, *iter);
-       tmp_pool.push_back(Neighbor(iter->id, d));
+       tmp_pool.push_back(Neighbor(*iter, d));
        }
 
     } while(result.size()>degree);
