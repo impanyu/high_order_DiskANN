@@ -1175,8 +1175,6 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
 
     //initialize C and E for MST
     
-   
-
     
     for (auto iter = tmp_pool.begin();  iter != tmp_pool.end(); ++iter){
  
