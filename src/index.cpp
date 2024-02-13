@@ -1231,7 +1231,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         
 
         }
-        cur_alpha *= 1.2f;
+        cur_alpha += .1;
         tmp_pool.clear();
         for(auto iter =pool.begin(); iter != pool.end(); ++iter){
             if (result_set.find(iter->id) == result_set.end()){
