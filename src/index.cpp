@@ -1150,9 +1150,9 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
      if(_indexingAlphas.size() > 0)
         alphas[1] = _indexingAlphas[0];
     */
-   float cur_alpha = _indexingAlphas[0];
-    do{
-    result.clear();
+   float cur_alpha = 1;
+    while (cur_alpha <= _indexingAlphas[0] && result.size() < degree){
+    //result.clear();
 
     for (int i = 1; i < alphas_length; i++){
         alphas[i] = alphas[i-1] * cur_alpha;
@@ -1206,9 +1206,10 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
 
             if(layer[min_id] == 1 ){
                 result.push_back(min_id);
-                /*if (result.size() >= degree){
+       
+                if (result.size() >= degree){
                     break;
-                }*/
+                }
             }
 
             if(layer[min_id] == alphas_length){
@@ -1226,14 +1227,21 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         
 
         }
-        //cur_alpha -= 0.02;
-   tmp_pool.clear();
+        cur_alpha += 0.05;
+        tmp_pool.clear();
+        for(auto iter =pool.begin(); iter != pool.end(); ++iter){
+            if (MST.find(iter->id) == MST.end()){
+                tmp_pool.push_back(*iter);
+            }
+        }   
+
+   /*tmp_pool.clear();
    for(auto iter = result.begin(); iter != result.end(); ++iter){
        auto d = _data_store->get_distance(location, *iter);
        tmp_pool.push_back(Neighbor(*iter, d));
        }
-
-    } while(result.size()>degree);
+*/
+    } 
   /*
      if (result.size() > degree){
            std::shuffle(result.begin(), result.end(), std::default_random_engine());
