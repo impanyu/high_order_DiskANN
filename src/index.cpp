@@ -1151,8 +1151,11 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         alphas[1] = _indexingAlphas[0];
     */
    float cur_alpha = 1;
-    while (cur_alpha <= _indexingAlphas[0]+0.01 && result.size() < degree){
+    //while (cur_alpha <= _indexingAlphas[0]+0.01 && result.size() < degree){
     //result.clear();
+    while (int i = 1; i<=2;i++){
+        if (i==2)
+           cur_alpha = _indexingAlphas[0];
 
     for (int i = 1; i < alphas_length; i++){
         alphas[i] = alphas[i-1] * cur_alpha;
@@ -1227,7 +1230,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         
 
         }
-        cur_alpha *= 1.2f;
+        //cur_alpha *= 1.2f;
         tmp_pool.clear();
         for(auto iter =pool.begin(); iter != pool.end(); ++iter){
             if (MST.find(iter->id) == MST.end()){
