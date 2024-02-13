@@ -1158,7 +1158,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         if (i==2)
            cur_alpha = _indexingAlphas[0];
 
-    for (int i = 1; i < alphas_length && result.size()<=degree; i++){
+    for (int i = 1; i < alphas_length && result.size()<degree; i++){
         alphas[i] = alphas[i-1] * cur_alpha;
        // alphas[i] =  cur_alpha;
     }
