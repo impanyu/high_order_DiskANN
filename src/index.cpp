@@ -1151,14 +1151,16 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
      if(_indexingAlphas.size() > 0)
         alphas[1] = _indexingAlphas[0];
     */
-   float cur_alpha = 1;
-    while (cur_alpha <= _indexingAlphas[0] && result.size() < degree){
-    //result.clear();
+   //float cur_alpha = 1;
+    float cur_alpha = _indexingAlphas[0];
+    do{
+    //while (cur_alpha <= _indexingAlphas[0] && result.size() < degree){
+    result.clear();
     //for (int i = 1; i<=2;i++){
         //if (i==2)
           // cur_alpha = _indexingAlphas[0];
 
-    for (int i = 1; i < alphas_length && result.size()<degree; i++){
+    for (int i = 1; i < alphas_length; i++){
         alphas[i] = alphas[i-1] * cur_alpha;
        // alphas[i] =  cur_alpha;
     }
@@ -1231,13 +1233,14 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         
 
         }
-        cur_alpha += .1;
+        /*cur_alpha += .1;
         tmp_pool.clear();
         for(auto iter =pool.begin(); iter != pool.end(); ++iter){
             if (result_set.find(iter->id) == result_set.end()){
                 tmp_pool.push_back(*iter);
             }
-        }   
+        } */
+        cur_alpha -= .2;  
 
    /*tmp_pool.clear();
    for(auto iter = result.begin(); iter != result.end(); ++iter){
@@ -1245,7 +1248,9 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
        tmp_pool.push_back(Neighbor(*iter, d));
        }
 */
-    } 
+    } while(cur_alpha >=1 && result.size() > degree);
+    if (result.size()>degree)
+       result.resize(degree);
   /*
      if (result.size() > degree){
            std::shuffle(result.begin(), result.end(), std::default_random_engine());
