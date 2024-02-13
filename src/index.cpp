@@ -1137,6 +1137,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     //float cur_alpha = 1;
     int alphas_length =  _indexingAlphas[1];
     std::vector<float> alphas(alphas_length, 1);
+    std::unordered_set<uint32_t> MST_all;
 
     std::vector<Neighbor> tmp_pool(pool.begin(), pool.end());
  
@@ -1205,6 +1206,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             }
     
             MST.insert(min_id);
+            MST_all.insert(min_id);
             layer[min_id] = layer[E[min_id]]+1;
 
             if(layer[min_id] == 1 ){
@@ -1233,7 +1235,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         //cur_alpha *= 1.2f;
         tmp_pool.clear();
         for(auto iter =pool.begin(); iter != pool.end(); ++iter){
-            if (MST.find(iter->id) == MST.end()){
+            if (MST_all.find(iter->id) == MST_all.end()){
                 tmp_pool.push_back(*iter);
             }
         }   
