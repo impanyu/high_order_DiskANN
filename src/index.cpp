@@ -1153,7 +1153,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
    float cur_alpha = 1;
     //while (cur_alpha <= _indexingAlphas[0]+0.01 && result.size() < degree){
     //result.clear();
-    while (int i = 1; i<=2;i++){
+    for (int i = 1; i<=2;i++){
         if (i==2)
            cur_alpha = _indexingAlphas[0];
 
