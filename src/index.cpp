@@ -1137,7 +1137,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     //float cur_alpha = 1;
     int alphas_length =  _indexingAlphas[1];
     std::vector<float> alphas(alphas_length, 1);
-    std::unordered_set<uint32_t> MST_all;
+    std::unordered_set<uint32_t> result_set;
 
     std::vector<Neighbor> tmp_pool(pool.begin(), pool.end());
  
@@ -1158,7 +1158,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         if (i==2)
            cur_alpha = _indexingAlphas[0];
 
-    for (int i = 1; i < alphas_length; i++){
+    for (int i = 1; i < alphas_length && result.size()<=degree; i++){
         alphas[i] = alphas[i-1] * cur_alpha;
        // alphas[i] =  cur_alpha;
     }
@@ -1204,11 +1204,12 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             }
     
             MST.insert(min_id);
-            MST_all.insert(min_id);
+            
             layer[min_id] = layer[E[min_id]]+1;
 
             if(layer[min_id] == 1 ){
                 result.push_back(min_id);
+                result_set.insert(min_id);
        
                 if (result.size() >= degree){
                     break;
@@ -1233,7 +1234,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         //cur_alpha *= 1.2f;
         tmp_pool.clear();
         for(auto iter =pool.begin(); iter != pool.end(); ++iter){
-            if (MST_all.find(iter->id) == MST_all.end()){
+            if (result_set.find(iter->id) == result_set.end()){
                 tmp_pool.push_back(*iter);
             }
         }   
