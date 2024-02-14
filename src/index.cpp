@@ -1249,7 +1249,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
        tmp_pool.push_back(Neighbor(*iter, d));
        }
 */
-    } while(cur_alpha >1 && result.size() > degree);
+    } while(cur_alpha >1 && result.size() > degree*100);
     if (result.size()>degree)
        result.resize(degree);
   /*
