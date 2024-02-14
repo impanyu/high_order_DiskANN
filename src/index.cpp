@@ -1191,15 +1191,17 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     E[location] = -1;
     layer[location] = 0; 
     MST.insert(location);
+    std::sort(tmp_pool.begin(), tmp_pool.end());
    
     while(MST.size() < tmp_pool.size()+1){
 
             float min = std::numeric_limits<float>::max();
             uint32_t min_id = 0;
             for (auto iter = tmp_pool.begin();  iter != tmp_pool.end(); ++iter){
-                if (MST.find(iter->id) == MST.end() && C[iter->id] < min){
-                    min = C[iter->id];
+                if (MST.find(iter->id) == MST.end()){ //&& C[iter->id] < min){
+                    //min = C[iter->id];
                     min_id = iter->id;
+                    break;
                 }
             }
             if (min_id == location){
