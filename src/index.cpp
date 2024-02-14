@@ -1250,8 +1250,8 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
        }
 */
     } while(cur_alpha >1 && result.size() > degree*100);
-    if (result.size()>degree)
-       result.resize(degree);
+    //if (result.size()>degree)
+      // result.resize(degree);
   /*
      if (result.size() > degree){
            std::shuffle(result.begin(), result.end(), std::default_random_engine());
