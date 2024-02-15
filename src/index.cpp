@@ -1216,9 +1216,9 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
                 result.push_back(min_id);
                 result_set.insert(min_id);
        
-                /*if (result.size() >= degree){
+                if (result.size() >= degree){
                     break;
-                }*/
+                }
             }
 
             if(layer[min_id] == alphas_length){
@@ -1251,7 +1251,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
        tmp_pool.push_back(Neighbor(*iter, d));
        }
 */
-    } while(cur_alpha >1 && result.size() > degree);
+    } while(cur_alpha >1 && result.size() > degree*100);
     if (result.size()>degree)
        result.resize(degree);
   /*
