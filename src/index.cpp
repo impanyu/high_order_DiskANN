@@ -1209,15 +1209,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             l = m+1;
         }
     }
-
-
-
-
-
-
-
-    
-
+    k_medoids(l+1,location,pool,result);
    
   
 }
