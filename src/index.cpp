@@ -1158,9 +1158,15 @@ bool Index<T, TagT, LabelT>::update_medoids(int location, std::vector<uint32_t> 
 template <typename T, typename TagT, typename LabelT>
 float Index<T, TagT, LabelT>::k_medoids(int k, int location, std::vector<Neighbor> &pool,std::vector<uint32_t> &result){
     result.clear();
-    for (auto iter = pool.begin();  iter != pool.begin()+k; ++iter){
-        result.push_back(iter->id);
+    std::vector<int> vec;
+    for (int i = 0; i < pool.size(); i++){
+        vec.push_back(i);
     }
+    std::shuffle(vec.begin(), vec.end(), std::default_random_engine());
+    for (int i = 0; i < k; i++){
+        result.push_back(pool[vec[i]].id);
+    }
+
     bool changed = false;
     std::vector<std::vector<int>> clusters;
     float total_distance = 0;
