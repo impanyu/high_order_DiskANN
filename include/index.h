@@ -263,6 +263,11 @@ template <typename T, typename TagT = uint32_t, typename LabelT = uint32_t> clas
                          const uint32_t max_candidate_size, const float alpha, std::vector<uint32_t> &pruned_list,
                          InMemQueryScratch<T> *scratch);
 
+
+    void assign_to_clusters(int location, std::vector<Neighbor> &pool, std::vector<uint32_t> &medoids, std::vector<std::vector<int>> &clusters);
+    bool update_medoids(int location, std::vector<uint32_t> &medoids, std::vector<std::vector<int>> &clusters, float& total_distance);
+    float k_medoids(int k, int location, std::vector<Neighbor> &pool,std::vector<uint32_t> &result);
+    
     // Prunes candidates in @pool to a shorter list @result
     // @pool must be sorted before calling
     void occlude_list(const uint32_t location, std::vector<Neighbor> &pool, const float alpha, const uint32_t degree,
