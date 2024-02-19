@@ -1162,7 +1162,7 @@ float Index<T, TagT, LabelT>::k_medoids(int k, int location, std::vector<Neighbo
         result.push_back(iter->id);
     }
     bool changed = false;
-    std::vector<std::vector<int>> medoids;
+    std::vector<std::vector<int>> clusters;
     float total_distance = 0;
     do{
         
