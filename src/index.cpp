@@ -1131,6 +1131,7 @@ void assign_to_clusters(int location, std::vector<Neighbor> &pool, std::vector<u
 
 bool update_medoids(int location, std::vector<uint32_t> &medoids, std::vector<std::vector<int>> &clusters, float& total_distance){
     bool changed = false;
+    total_distance = 0;
     for (int i = 0; i < medoids.size(); i++){
         float min_d = std::numeric_limits<float>::max();
         int min_id = 0;
@@ -1161,8 +1162,9 @@ void k_medoids(int k, int location, std::vector<Neighbor> &pool,std::vector<uint
     }
     bool changed = false;
     std:vector<std:vector<int>> clusters;
+    float total_distance = 0;
     do{
-        float total_distance = 0;
+        
         assign_to_clusters(location, pool, result, clusters);
         changed = update_medoids(location,  result, clusters, total_distance);
     }while(changed);
