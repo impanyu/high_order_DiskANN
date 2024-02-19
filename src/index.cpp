@@ -1207,7 +1207,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     while (l<r){
         int m = (l+r)/2;
         float avg_d = k_medoids(m,location,pool,result);
-        diskann::cout<<avg_d<<std::endl;
+        //diskann::cout<<avg_d<<std::endl;
         if (avg_d <= 1/cur_alpha){
             r = m;
         } else {
