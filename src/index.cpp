@@ -1164,11 +1164,11 @@ float Index<T, TagT, LabelT>::k_medoids(int k, int location, std::vector<Neighbo
     bool changed = false;
     std::vector<std::vector<int>> clusters;
     float total_distance = 0;
-    do{
+    /*do{
         
         assign_to_clusters(location, pool, result, clusters);
         changed = update_medoids(location,  result, clusters, total_distance);
-    }while(changed);
+    }while(changed);*/
     return total_distance;
 
 }
@@ -1203,8 +1203,8 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     float cur_alpha = _indexingAlphas[0];
 
     int l = 1;
-    int r = degree+1;/*
-    while (l<r){
+    int r = degree+1;
+    /*while (l<r){
         int m = (l+r)/2;
         
         if (k_medoids(m,location,pool,result) <= 1/cur_alpha){
@@ -1212,8 +1212,8 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         } else {
             l = m+1;
         }
-    }
-    k_medoids(l+1,location,pool,result);*/
+    }*/
+    k_medoids(r,location,pool,result);
    
   
 }
