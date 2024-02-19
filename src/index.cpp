@@ -1203,7 +1203,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     float cur_alpha = _indexingAlphas[0];
 
     int l = 1;
-    int r = std::min(degree,pool.size())+1;
+    int r = std::min(static_cast<std::size_t>(degree),pool.size())+1;
     /*while (l<r){
         int m = (l+r)/2;
         
