@@ -1112,6 +1112,63 @@ void Index<T, TagT, LabelT>::search_for_point_and_prune(int location, uint32_t L
 }
 
 
+void assign_to_clusters(int location, std::vector<Neighbor> &pool, std::vector<uint32_t> &medoids, std::vector<std::vector<int>> &clusters){
+    clusters.clear();
+    clusters.resize(medoids.size());
+    for (auto iter = pool.begin();  iter != pool.end(); ++iter){
+        float min = std::numeric_limits<float>::max();
+        int min_id = 0;
+        for (int i = 0; i < medoids.size(); i++){
+            float d = _data_store->get_distance(iter->id, medoids[i])/(_data_store->get_distance(iter->id, location)+1e-6);
+            if (d < min){
+                min = d;
+                min_id = i;
+            }
+        }
+        clusters[min_id].push_back(iter->id);
+    }
+}
+
+bool update_medoids(int location, std::vector<uint32_t> &medoids, std::vector<std::vector<int>> &clusters, float& total_distance){
+    bool changed = false;
+    for (int i = 0; i < medoids.size(); i++){
+        float min_d = std::numeric_limits<float>::max();
+        int min_id = 0;
+        for (auto iter = clusters[i].begin();  iter != clusters[i].end(); ++iter){
+            float d = 0;
+            for (auto iter2 = clusters[i].begin();  iter2 != clusters[i].end(); ++iter2){
+                d += _data_store->get_distance(*iter, *iter2)/(_data_store->get_distance(*iter2, location)+1e-6);
+            }
+            //d = d/clusters[i].size();
+            if (d < min_d){
+                min_d = d;
+                min_id = *iter;
+            }
+        }
+        total_distance += min;
+        if (min_id != medoids[i]){
+            medoids[i] = min_id;
+            changed = true;
+        }
+    }
+    return changed;
+}
+
+void k_medoids(int k, int location, std::vector<Neighbor> &pool,std::vector<uint32_t> &result){
+    for (auto iter = pool.begin();  iter != pool.begin()+k; ++iter){
+        result.push_back(iter->id);
+    }
+    bool changed = false;
+    std:vector<std:vector<int>> clusters;
+    do{
+        float total_distance = 0;
+        assign_to_clusters(location, pool, result, clusters);
+        changed = update_medoids(location,  result, clusters, total_distance);
+    }while(changed);
+    return total_distance;
+
+}
+
 
 template <typename T, typename TagT, typename LabelT>
 void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<Neighbor> &pool, const float alpha,
@@ -1138,114 +1195,28 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     int alphas_length =  _indexingAlphas[1];
     std::vector<float> alphas(alphas_length, 1);
   
- 
 
-     
-     /*for (float val : alphas) {
-        std::cout << val << " ";
-    }*/
-    //std::cout<<alphas.size();
-    //std::cout << std::endl;
-    /*
-    
-     if(_indexingAlphas.size() > 0)
-        alphas[1] = _indexingAlphas[0];
-    */
     float cur_alpha = _indexingAlphas[0];
-    do{
-    result.clear();
 
-    for (int i = 1; i < alphas_length; i++){
-        alphas[i] = cur_alpha;
+    int l = 1;
+    int r = degree+1;
+    while (l<r){
+        int m = (l+r)/2;
+        result.clear();
+        if (k_medoids(m,location,pool,result) <= 1/cur_alpha){
+            r = m;
+        } else {
+            l = m+1;
+        }
     }
 
-    
-
-    std::unordered_map<uint32_t,float> C;
-    std::unordered_map<uint32_t,uint32_t> E;
-    std::unordered_map<uint32_t,uint32_t> layer;
-    std::unordered_set<uint32_t> MST;
-
-    //std::priority_queue<float, std::vector<float>, std::greater<float>> C_pq;
 
 
-    //initialize C and E for MST
-    
-   
+
+
+
 
     
-    for (auto iter = pool.begin();  iter != pool.end(); ++iter){
- 
-        C[iter->id] = _data_store->get_distance(iter->id, location);
-        E[iter->id] = location;
-        layer[iter->id] = 1;
-    }
-
- 
-    C[location] = 0;
-    E[location] = -1;
-    layer[location] = 0; 
-    MST.insert(location);
-   
-    
-
-
-    while(MST.size() < pool.size()+1){
-
-        float min = std::numeric_limits<float>::max();
-        uint32_t min_id = 0;
-        for (auto iter = pool.begin();  iter != pool.end(); ++iter){
-            if (MST.find(iter->id) == MST.end() && C[iter->id] < min){
-                min = C[iter->id];
-                min_id = iter->id;
-            }
-        }
-        if (min_id == location){
-            continue;
-        }
-   
-        MST.insert(min_id);
-        layer[min_id] = layer[E[min_id]]+1;
-
-        if(layer[min_id] == 1 ){
-            result.push_back(min_id);
-           /* if (result.size() >= degree){
-                break;
-            }*/
-        }
-
-        if(layer[min_id] == alphas_length){
-            continue;
-        }
-
-        //modify C and E based on current layer of min_id
-        for (auto iter = pool.begin();  iter != pool.end(); ++iter){
-            auto d = _data_store->get_distance(iter->id, min_id) * alphas[layer[min_id]] + C[min_id];
-            d = d / (layer[min_id]+1);
-            if (MST.find(iter->id) == MST.end() && d < C[iter->id]){
-                C[iter->id] = d ;
-                E[iter->id] = min_id;
-            }
-        }
-
-
-    }
-          cur_alpha -= 0.05;
-    } while(cur_alpha >= 1 && result.size()>degree);
-
-    /* if (result.size() > degree){
-           std::shuffle(result.begin(), result.end(), std::default_random_engine());
-           result.resize(degree);
-        }
-*/
-    // push the node in first layer to result
-    /*
-    for (auto iter = pool.begin();  iter != pool.end(); ++iter)
-    {
-        if (layer[iter->id] == 1){
-            result.push_back(iter->id);
-        }
-    }*/
 
    
   
