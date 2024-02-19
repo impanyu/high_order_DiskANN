@@ -1155,6 +1155,7 @@ bool update_medoids(int location, std::vector<uint32_t> &medoids, std::vector<st
 }
 
 void k_medoids(int k, int location, std::vector<Neighbor> &pool,std::vector<uint32_t> &result){
+    result.clear();
     for (auto iter = pool.begin();  iter != pool.begin()+k; ++iter){
         result.push_back(iter->id);
     }
@@ -1202,7 +1203,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     int r = degree+1;
     while (l<r){
         int m = (l+r)/2;
-        result.clear();
+        
         if (k_medoids(m,location,pool,result) <= 1/cur_alpha){
             r = m;
         } else {
