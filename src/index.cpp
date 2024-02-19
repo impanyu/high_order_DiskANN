@@ -1164,11 +1164,11 @@ float Index<T, TagT, LabelT>::k_medoids(int k, int location, std::vector<Neighbo
     bool changed = false;
     std::vector<std::vector<int>> clusters;
     float total_distance = 0;
-    /*do{
+    do{
         
         assign_to_clusters(location, pool, result, clusters);
         changed = update_medoids(location,  result, clusters, total_distance);
-    }while(changed);*/
+    }while(changed);
     return total_distance;
 
 }
