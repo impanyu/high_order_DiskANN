@@ -1146,7 +1146,7 @@ bool Index<T, TagT, LabelT>::update_medoids(int location, std::vector<uint32_t> 
                 min_id = *iter;
             }
         }
-        total_distance += min;
+        total_distance += min_d;
         if (min_id != medoids[i]){
             medoids[i] = min_id;
             changed = true;
