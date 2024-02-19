@@ -1203,7 +1203,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     float cur_alpha = _indexingAlphas[0];
 
     int l = 1;
-    int r = degree+1;
+    int r = degree+1;/*
     while (l<r){
         int m = (l+r)/2;
         
@@ -1213,7 +1213,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             l = m+1;
         }
     }
-    k_medoids(l+1,location,pool,result);
+    k_medoids(l+1,location,pool,result);*/
    
   
 }
