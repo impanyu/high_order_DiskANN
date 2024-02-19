@@ -1111,8 +1111,8 @@ void Index<T, TagT, LabelT>::search_for_point_and_prune(int location, uint32_t L
     assert(_graph_store->get_total_points() == _max_points + _num_frozen_pts);
 }
 
-
-void assign_to_clusters(int location, std::vector<Neighbor> &pool, std::vector<uint32_t> &medoids, std::vector<std::vector<int>> &clusters){
+template <typename T, typename TagT, typename LabelT>
+void Index<T, TagT, LabelT>::assign_to_clusters(int location, std::vector<Neighbor> &pool, std::vector<uint32_t> &medoids, std::vector<std::vector<int>> &clusters){
     clusters.clear();
     clusters.resize(medoids.size());
     for (auto iter = pool.begin();  iter != pool.end(); ++iter){
@@ -1128,8 +1128,8 @@ void assign_to_clusters(int location, std::vector<Neighbor> &pool, std::vector<u
         clusters[min_id].push_back(iter->id);
     }
 }
-
-bool update_medoids(int location, std::vector<uint32_t> &medoids, std::vector<std::vector<int>> &clusters, float& total_distance){
+template <typename T, typename TagT, typename LabelT>
+bool Index<T, TagT, LabelT>::update_medoids(int location, std::vector<uint32_t> &medoids, std::vector<std::vector<int>> &clusters, float& total_distance){
     bool changed = false;
     total_distance = 0;
     for (int i = 0; i < medoids.size(); i++){
@@ -1155,7 +1155,8 @@ bool update_medoids(int location, std::vector<uint32_t> &medoids, std::vector<st
     return changed;
 }
 
-void k_medoids(int k, int location, std::vector<Neighbor> &pool,std::vector<uint32_t> &result){
+template <typename T, typename TagT, typename LabelT>
+float Index<T, TagT, LabelT>::k_medoids(int k, int location, std::vector<Neighbor> &pool,std::vector<uint32_t> &result){
     result.clear();
     for (auto iter = pool.begin();  iter != pool.begin()+k; ++iter){
         result.push_back(iter->id);
