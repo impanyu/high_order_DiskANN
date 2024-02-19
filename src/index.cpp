@@ -1119,7 +1119,7 @@ void Index<T, TagT, LabelT>::assign_to_clusters(int location, std::vector<Neighb
         float min = std::numeric_limits<float>::max();
         int min_id = 0;
         for (int i = 0; i < medoids.size(); i++){
-            float d = _data_store->get_distance(iter->id, medoids[i])/(_data_store->get_distance(iter->id, location)+1e-6);
+            float d = _data_store->get_distance(iter->id, medoids[i])/(iter->distance+1e-6);
             if (d < min){
                 min = d;
                 min_id = i;
@@ -1138,7 +1138,7 @@ bool Index<T, TagT, LabelT>::update_medoids(int location, std::vector<uint32_t> 
         for (auto iter = clusters[i].begin();  iter != clusters[i].end(); ++iter){
             float d = 0;
             for (auto iter2 = clusters[i].begin();  iter2 != clusters[i].end(); ++iter2){
-                d += _data_store->get_distance(*iter, *iter2)/(_data_store->get_distance(*iter2, location)+1e-6);
+                d += _data_store->get_distance(*iter, *iter2)/(iter2->distance+1e-6);
             }
             //d = d/clusters[i].size();
             if (d < min_d){
