@@ -1206,8 +1206,9 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     int r = std::min(static_cast<std::size_t>(degree),pool.size())+1;
     while (l<r){
         int m = (l+r)/2;
-        
-        if (k_medoids(m,location,pool,result) <= 1/cur_alpha){
+        float avg_d = k_medoids(m,location,pool,result);
+        cout<<avg_d<<endl;
+        if (avg_d <= 1/cur_alpha){
             r = m;
         } else {
             l = m+1;
