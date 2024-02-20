@@ -1142,7 +1142,7 @@ bool Index<T, TagT, LabelT>::update_medoids(int location, std::vector<uint32_t> 
             for (auto iter2 = clusters[i].begin();  iter2 != clusters[i].end(); ++iter2){
                 float current_d = _data_store->get_distance(*iter, *iter2)/(_data_store->get_distance(*iter2,location)+1e-6);
                 d += current_d;
-                m_d = std::max(d,m_d);
+                m_d = std::max(current_d,m_d);
             }
             //d = d/clusters[i].size();
             if (d < min_d){
