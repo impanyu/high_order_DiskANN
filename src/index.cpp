@@ -1151,7 +1151,7 @@ bool Index<T, TagT, LabelT>::update_medoids(int location, std::vector<uint32_t> 
                 max_d = m_d;
             }
         }
-        total_distance = std::max(max_d,total_distance);
+        total_distance +=min_d;  //std::max(max_d,total_distance);
         if (min_id != medoids[i]){
             medoids[i] = min_id;
             changed = true;
@@ -1180,7 +1180,7 @@ float Index<T, TagT, LabelT>::k_medoids(int k, int location, std::vector<Neighbo
         assign_to_clusters(location, pool, result, clusters);
         changed = update_medoids(location,  result, clusters, total_distance);
     }while(changed);
-    return total_distance;///pool.size();
+    return total_distance/pool.size();
 
 }
 
@@ -1214,7 +1214,8 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     float cur_alpha = _indexingAlphas[0];
 
     int l = 1;
-    int r = std::min(static_cast<std::size_t>(degree),pool.size())+1;
+    int init_r = std::min(static_cast<std::size_t>(degree),pool.size())+1;
+    int r = init_r;
     while (l<r){
         int m = (l+r)/2;
         float avg_d = k_medoids(m,location,pool,result);
@@ -1225,7 +1226,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             l = m+1;
         }
     }
-    k_medoids(std::min(static_cast<std::size_t>(l),pool.size()),location,pool,result);
+    k_medoids(std::min(l,init_r),location,pool,result);
    
   
 }
@@ -1379,7 +1380,7 @@ template <typename T, typename TagT, typename LabelT> void Index<T, TagT, LabelT
     diskann::Timer link_timer;
      const unsigned NUM_RNDS = 2;
     float last_round_alpha = _indexingAlphas[0];
-    _indexingAlphas[0] = 1;
+    _indexingAlphas[0] = 1.2;
   
 for (uint32_t rnd_no = 0; rnd_no < NUM_RNDS; rnd_no++) {
 
