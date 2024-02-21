@@ -1229,7 +1229,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     }
     k_medoids(std::min(l,init_r-1),location,pool,result);
     */
-    std::vector<std::pair<float,int>> neighbour_with_indices;
+    std::vector<std::vector<float>> neighbour_with_indices;
     for (int i = 0; i < pool.size(); i++){
         float index = 0;
         for (int j = 0; j<pool.size();j++){
@@ -1238,17 +1238,49 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             float d_j = pool[j].distance;
             index += d_j/(d_i_j+1e-6);       
         }
-        neighbour_with_indices.push_back(std::make_pair(index,pool[i].id));
+
+        index = pool.size()==0? 1 : index/(pool.size()-1);
+        neighbour_with_indices.push_back({pool[i].id,index,1});
     }
 
-    std::sort(neighbour_with_indices.begin(),neighbour_with_indices.end(),[](const std::pair<float, int>& a, const std::pair<float, int>& b) {
+    /*std::sort(neighbour_with_indices.begin(),neighbour_with_indices.end(),[](const std::pair<float, int>& a, const std::pair<float, int>& b) {
         // Reverse order: if first elements are equal, compare second elements
         if (a.first == b.first) return a.second < b.second;
         return a.first > b.first;
-    });
+    });*/
 
-    for (int i = 0; i < neighbour_with_indices.size(); i++){
-        result.push_back(neighbour_with_indices[i].second);
+    std::unordered_set<int> result_set;
+    while(result_set.size() < degree){
+        float max_index = 0;
+        int max_index_id = 0;
+        //find the node with max index
+        for (int i = 0; i < neighbour_with_indices.size(); i++){
+            float cur_index = neighbour_with_indices[i][1]/neighbour_with_indices[i][2];
+           if(cur_index > max_index && result_set.find(neighbour_with_indices[i][0]) == result_set.end()){
+               max_index = cur_index;
+               max_index_id = neighbour_with_indices[i][0];
+           }
+        }
+        if (cur_index < cur_alpha ){
+            break;
+        }
+        result_set.insert(max_index_id);
+        result.push_back(max_index_id);
+        //adjust index
+        for(int j = 0; j < neighbour_with_indices.size(); j++){
+            if(result_set.find(neighbour_with_indices[j][0]) == result_set.end()){
+                float d_i_j = _data_store->get_distance(max_index_id,neighbour_with_indices[j][0]);
+                float d_i = pool[max_index_id].distance;
+                float d_j = pool[neighbour_with_indices[j][0]].distance;
+                neighbour_with_indices[j][1] *= (pool.size() - result.size()-1+1);
+                neighbour_with_indices[j][1] -= d_i/(d_i_j+1e-6);
+                neighbour_with_indices[j][1] /= (pool.size() - result.size()-1);
+                neighbour_with_indices[j][2] *= result.size()-1; 
+                neighbour_with_indices[j][2] += d_j/(d_i_j+1e-6);
+                neighbour_with_indices[j][2] /= result.size();
+            }
+
+        }
     }
 
     
