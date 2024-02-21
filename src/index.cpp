@@ -1247,7 +1247,9 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         return a.first > b.first;
     });
 
-    std::unordered_set<int> result_set;
+    for (int i = 0; i < neighbour_with_indices.size(); i++){
+        result.push_back(neighbour_with_indices[i].second);
+    }
 
     
 
