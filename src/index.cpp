@@ -1213,6 +1213,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
 
     float cur_alpha = _indexingAlphas[0];
 
+    /*
     int l = 1;
     int init_r = std::min(static_cast<std::size_t>(degree),pool.size())+1;
     int r = init_r;
@@ -1227,6 +1228,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         }
     }
     k_medoids(std::min(l,init_r-1),location,pool,result);
+    */
    
   
 }
