@@ -1229,7 +1229,28 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     }
     k_medoids(std::min(l,init_r-1),location,pool,result);
     */
-   
+    std::vector<std::pair<float,int>> neighbour_with_indices;
+    for (int i = 0; i < pool.size(); i++){
+        float index = 0;
+        for (int j = 0; j<pool.size();j++){
+            if (i==j)   continue;
+            float d_i_j = _data_store->get_distance(pool[i].id,pool[j].id);
+            float d_j = pool[j].distance;
+            index += d_j/(d_i_j+1e-6);       
+        }
+        neighbour_with_indices.push_back(std::make_pair(index,pool[i].id));
+    }
+
+    std::sort(neighbour_with_indices.begin(),neighbour_with_indices.end(),[](const std::pair<float, int>& a, const std::pair<float, int>& b) {
+        // Reverse order: if first elements are equal, compare second elements
+        if (a.first == b.first) return a.second < b.second;
+        return a.first > b.first;
+    });
+
+    std::unordered_set<int> result_set;
+
+    
+
   
 }
 
