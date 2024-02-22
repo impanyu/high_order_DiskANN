@@ -1263,6 +1263,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
                max_index_id = (int)neighbour_with_indices[i][0];
            }
         }
+        std::cout<<max_index<<std::endl;
         if (max_index < cur_alpha ){
             break;
         }
