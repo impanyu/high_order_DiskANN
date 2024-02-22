@@ -1257,6 +1257,8 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         for (int i = 0; i < neighbour_with_indices.size(); i++){
             if(result_set.find((int)neighbour_with_indices[i][0]) != result_set.end())
                 continue;
+            std::cout<<"0: "<<neighbour_with_indices[i][0]<<std::endl;
+            std::cout<<"1: "<<neighbour_with_indices[i][1]<<std::endl;
             float cur_index = neighbour_with_indices[i][1]/neighbour_with_indices[i][2];
             std::cout<<cur_index<<std::endl;
            if(cur_index > max_index ){
