@@ -1482,7 +1482,7 @@ template <typename T, typename TagT, typename LabelT> void Index<T, TagT, LabelT
         _start = calculate_entry_point();
 
     diskann::Timer link_timer;
-     const unsigned NUM_RNDS = 1;
+     const unsigned NUM_RNDS = 2;
     float last_round_alpha = _indexingAlphas[0];
     _indexingAlphas[0] = 1.2;
   
