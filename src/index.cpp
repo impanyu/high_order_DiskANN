@@ -1263,7 +1263,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     }
 
     return;
-    
+    /*
     std::vector<std::vector<float>> neighbour_with_indices;
     for (int i = 0; i < pool.size(); i++){
         float index = 0;
@@ -1322,7 +1322,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         }
     }
 
-    
+    */
 
   
 }
