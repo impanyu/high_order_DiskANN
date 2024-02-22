@@ -1238,8 +1238,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             float d_j = pool[j].distance;
             index += d_j/(d_i_j+1e-6);       
         }
-        
-
+    
         index = pool.size()==1? 1 : index/(pool.size()-1);
         neighbour_with_indices.push_back({static_cast<float>(pool[i].id),index,1});
         std::cout<<"0: "<<neighbour_with_indices[i][0]<<std::endl;
