@@ -1255,13 +1255,15 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         int max_index_id = 0;
         //find the node with max index
         for (int i = 0; i < neighbour_with_indices.size(); i++){
+            if(result_set.find((int)neighbour_with_indices[i][0]) != result_set.end())
+                continue;
             float cur_index = neighbour_with_indices[i][1]/neighbour_with_indices[i][2];
-           if(cur_index > max_index && result_set.find((int)neighbour_with_indices[i][0]) == result_set.end()){
+           if(cur_index > max_index ){
                max_index = cur_index;
                max_index_id = (int)neighbour_with_indices[i][0];
            }
         }
-        if (cur_alpha < cur_alpha ){
+        if (max_index < cur_alpha ){
             break;
         }
         result_set.insert(max_index_id);
@@ -1269,15 +1271,15 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         //adjust index
         for(int j = 0; j < neighbour_with_indices.size(); j++){
             if(result_set.find((int)neighbour_with_indices[j][0]) == result_set.end()){
-                float d_i_j = _data_store->get_distance(max_index_id,neighbour_with_indices[j][0]);
+                float d_i_j = _data_store->get_distance(max_index_id,(int)neighbour_with_indices[j][0]);
                 float d_i = pool[max_index_id].distance;
-                float d_j = pool[neighbour_with_indices[j][0]].distance;
+                float d_j = pool[(int)neighbour_with_indices[j][0]].distance;
                 neighbour_with_indices[j][1] *= (pool.size() - result.size()-1+1);
                 neighbour_with_indices[j][1] -= d_i/(d_i_j+1e-6);
                 neighbour_with_indices[j][1] /= (pool.size() - result.size()-1);
                 neighbour_with_indices[j][2] *= result.size()+1-1; 
                 neighbour_with_indices[j][2] += d_j/(d_i_j+1e-6);
-                neighbour_with_indices[j][2] /= result.size();
+                neighbour_with_indices[j][2] /= result.size()+1;
             }
 
         }
