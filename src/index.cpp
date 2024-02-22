@@ -1229,6 +1229,41 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     }
     k_medoids(std::min(l,init_r-1),location,pool,result);
     */
+   
+    std::vector<std::pair<int,float>> neighbour_with_indices;
+    
+    for (int i = 0; i < pool.size(); i++){
+        float index_1 = 0;
+        float index_2 = 0;
+        for (int j = 0; j<pool.size();j++){
+            if (i==j)   continue;
+            float d_i_j = _data_store->get_distance(pool[i].id,pool[j].id);
+            float d_j = pool[j].distance;
+            float d_i = pool[i].distance;
+            index_1 += d_j/(d_i_j+1e-6);
+            index_2 += d_i/(d_i_j+1e-6);
+
+        }
+    
+        float index = pool.size() ==0? 1: index_1/index_2;
+        neighbour_with_indices.push_back(std::make_pair(index,pool[i].id));
+    }
+
+    std::sort(neighbour_with_indices.begin(),neighbour_with_indices.end(),[](const std::pair<float, int>& a, const std::pair<float, int>& b) {
+        // Reverse order: if first elements are equal, compare second elements
+        if (a.first == b.first) return a.second < b.second;
+        return a.first > b.first;
+    });
+
+    for(int i = 0; i < neighbour_with_indices.size(); i++){
+        if (neighbour_with_indices[i].first < 1 ){
+            break;
+        }
+        result.push_back(neighbour_with_indices[i].second);
+    }
+
+    return;
+    
     std::vector<std::vector<float>> neighbour_with_indices;
     for (int i = 0; i < pool.size(); i++){
         float index = 0;
@@ -1246,11 +1281,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         std::cout<<"2: "<<neighbour_with_indices[i][2]<<std::endl;
     }
 
-    /*std::sort(neighbour_with_indices.begin(),neighbour_with_indices.end(),[](const std::pair<float, int>& a, const std::pair<float, int>& b) {
-        // Reverse order: if first elements are equal, compare second elements
-        if (a.first == b.first) return a.second < b.second;
-        return a.first > b.first;
-    });*/
+
 
     std::unordered_set<int> result_set;
     while(result_set.size() < degree){
