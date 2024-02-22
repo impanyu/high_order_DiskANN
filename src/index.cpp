@@ -1262,7 +1262,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         return a.first > b.first;
     });
 
-    result.push_back(neigbour_with_indices[0].second);
+    result.push_back(neighbour_with_indices[0].second);
     for(int i = 1; i < neighbour_with_indices.size(); i++){
         //std::cout<<neighbour_with_indices[i].first<<std::endl;
         if (neighbour_with_indices[i].first < cur_alpha ){
