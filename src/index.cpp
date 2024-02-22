@@ -1238,9 +1238,12 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             float d_j = pool[j].distance;
             index += d_j/(d_i_j+1e-6);       
         }
+        
 
         index = pool.size()==0? 1 : index/(pool.size()-1);
         neighbour_with_indices.push_back({static_cast<float>(pool[i].id),index,1});
+        std::cout<<"0: "<<neighbour_with_indices[i][0]<<std::endl;
+        std::cout<<"1: "<<neighbour_with_indices[i][1]<<std::endl;
     }
 
     /*std::sort(neighbour_with_indices.begin(),neighbour_with_indices.end(),[](const std::pair<float, int>& a, const std::pair<float, int>& b) {
@@ -1257,10 +1260,9 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         for (int i = 0; i < neighbour_with_indices.size(); i++){
             if(result_set.find((int)neighbour_with_indices[i][0]) != result_set.end())
                 continue;
-            std::cout<<"0: "<<neighbour_with_indices[i][0]<<std::endl;
-            std::cout<<"1: "<<neighbour_with_indices[i][1]<<std::endl;
+            
             float cur_index = neighbour_with_indices[i][1]/neighbour_with_indices[i][2];
-            std::cout<<cur_index<<std::endl;
+            //std::cout<<cur_index<<std::endl;
            if(cur_index > max_index ){
                max_index = cur_index;
                max_index_id = (int)neighbour_with_indices[i][0];
