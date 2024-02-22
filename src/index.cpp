@@ -1240,7 +1240,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         }
 
         index = pool.size()==0? 1 : index/(pool.size()-1);
-        neighbour_with_indices.push_back({pool[i].id,index,1});
+        neighbour_with_indices.push_back({static_cast<float>(pool[i].id),index,1});
     }
 
     /*std::sort(neighbour_with_indices.begin(),neighbour_with_indices.end(),[](const std::pair<float, int>& a, const std::pair<float, int>& b) {
@@ -1256,9 +1256,9 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         //find the node with max index
         for (int i = 0; i < neighbour_with_indices.size(); i++){
             float cur_index = neighbour_with_indices[i][1]/neighbour_with_indices[i][2];
-           if(cur_index > max_index && result_set.find(neighbour_with_indices[i][0]) == result_set.end()){
+           if(cur_index > max_index && result_set.find((int)neighbour_with_indices[i][0]) == result_set.end()){
                max_index = cur_index;
-               max_index_id = neighbour_with_indices[i][0];
+               max_index_id = (int)neighbour_with_indices[i][0];
            }
         }
         if (cur_alpha < cur_alpha ){
@@ -1268,7 +1268,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         result.push_back(max_index_id);
         //adjust index
         for(int j = 0; j < neighbour_with_indices.size(); j++){
-            if(result_set.find(neighbour_with_indices[j][0]) == result_set.end()){
+            if(result_set.find((int)neighbour_with_indices[j][0]) == result_set.end()){
                 float d_i_j = _data_store->get_distance(max_index_id,neighbour_with_indices[j][0]);
                 float d_i = pool[max_index_id].distance;
                 float d_j = pool[neighbour_with_indices[j][0]].distance;
