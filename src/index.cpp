@@ -1230,7 +1230,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     k_medoids(std::min(l,init_r-1),location,pool,result);
     */
     std::cout<<"pool size: "<<pool.size()<<std::endl;
-    std::vector<std::pair<int,float>> neighbour_with_indices;
+    std::vector<std::pair<float,int>> neighbour_with_indices;
     
     for (int i = 0; i < pool.size(); i++){
         float index_1 = 0;
