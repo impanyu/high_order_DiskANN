@@ -1246,8 +1246,8 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         }
         if (pool[i].id==location)
            std::cout<<"location here "<<std::endl;
-        std::cout<<"index_1: "index_1<<std::endl;
-        std::cout<<"index_2: "index_2<<std::endl;
+        std::cout<<"index_1: "<<index_1<<std::endl;
+        std::cout<<"index_2: "<<index_2<<std::endl;
     
         float index = pool.size() ==0? 1: index_1/index_2;
         neighbour_with_indices.push_back(std::make_pair(index,pool[i].id));
