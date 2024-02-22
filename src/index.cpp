@@ -1275,7 +1275,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
                 neighbour_with_indices[j][1] *= (pool.size() - result.size()-1+1);
                 neighbour_with_indices[j][1] -= d_i/(d_i_j+1e-6);
                 neighbour_with_indices[j][1] /= (pool.size() - result.size()-1);
-                neighbour_with_indices[j][2] *= result.size()-1; 
+                neighbour_with_indices[j][2] *= result.size()+1-1; 
                 neighbour_with_indices[j][2] += d_j/(d_i_j+1e-6);
                 neighbour_with_indices[j][2] /= result.size();
             }
