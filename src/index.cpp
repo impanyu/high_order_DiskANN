@@ -1287,7 +1287,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         }
     
         index_1 = pool.size()==1? 1 : index_1/(pool.size()-1);
-        neighbour_with_indices.push_back({static_cast<float>(pool[i].id),index_1,index_2});
+        neighbour_with_indices.push_back({static_cast<float>(i),index_1,index_2});
 
     }
 
@@ -1296,10 +1296,11 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     std::unordered_set<int> result_set;
     while(result_set.size() < degree){
         float max_index = 0;
-        int max_index_id = 0;
+        int max_index_id = 0; //id in pool
         //find the node with max index
         for (int i = 0; i < neighbour_with_indices.size(); i++){
-            if(result_set.find((int)neighbour_with_indices[i][0]) != result_set.end())
+            int actual_id = pool[(int)neighbour_with_indices[i][0]].id;
+            if(result_set.find(actual_id) != result_set.end())
                 continue;
             
             float cur_index = neighbour_with_indices[i][1]/neighbour_with_indices[i][2];
@@ -1313,18 +1314,19 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         if (max_index < cur_alpha && result_set.size() > 0){
             break;
         }
-        result_set.insert(max_index_id);
-        result.push_back(max_index_id);
+        result_set.insert(pool[max_index_id].id);
+        result.push_back(pool[max_index_id].id);
         float d_i = pool[max_index_id].distance;
 
         //adjust index
         for(int j = 0; j < neighbour_with_indices.size(); j++){
-            if (result_set.find((int)neighbour_with_indices[j][0]) != result_set.end())
+            int actual_id = pool[(int)neighbour_with_indices[j][0]].id;
+            if (result_set.find(actual_id) != result_set.end())
                 continue;
             
-            float d_i_j = _data_store->get_distance(max_index_id,(int)neighbour_with_indices[j][0]);
+            float d_i_j = _data_store->get_distance(pool[max_index_id].id,actual_id);
             
-            float d_j = pool[j].distance;
+            float d_j = pool[(int)neighbour_with_indices[j][0]].distance;
             
             if (result.size() == pool.size()-1){
                 neighbour_with_indices[j][1] = 1;
