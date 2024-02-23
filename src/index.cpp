@@ -1306,7 +1306,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
                 continue;
             
             float cur_index = neighbour_with_indices[i][1]/pow(neighbour_with_indices[i][2],cur_exp);
-            //std::cout<<cur_index<<std::endl;
+            std::cout<<cur_index<<std::endl;
            if(cur_index > max_index ){
                max_index = cur_index;
                max_index_id = (int)neighbour_with_indices[i][0];
