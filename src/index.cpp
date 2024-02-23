@@ -27,6 +27,7 @@
 #include <unordered_set>
 #include <algorithm>
 #include <random>
+#include <cmath> // Include to use pow
 
 namespace diskann
 {
@@ -1212,6 +1213,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
   
 
     float cur_alpha = _indexingAlphas[0];
+    float cur_exp = _indexingAlphas[1]; 
 
     /*
     int l = 1;
@@ -1303,7 +1305,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             if(result_set.find(actual_id) != result_set.end())
                 continue;
             
-            float cur_index = neighbour_with_indices[i][1]/neighbour_with_indices[i][2];
+            float cur_index = neighbour_with_indices[i][1]/pow(neighbour_with_indices[i][2],cur_exp);
             //std::cout<<cur_index<<std::endl;
            if(cur_index > max_index ){
                max_index = cur_index;
@@ -1501,6 +1503,7 @@ template <typename T, typename TagT, typename LabelT> void Index<T, TagT, LabelT
      const unsigned NUM_RNDS = 2;
     float last_round_alpha = _indexingAlphas[0];
     _indexingAlphas[0] = 1;
+    _indexingAlphas[1] = 1;
   
 for (uint32_t rnd_no = 0; rnd_no < NUM_RNDS; rnd_no++) {
 
