@@ -1316,7 +1316,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         result_set.insert(max_index_id);
         result.push_back(max_index_id);
         //adjust index
-        for(int j = 0; j < neighbour_with_indices.size(); j++){
+        /*for(int j = 0; j < neighbour_with_indices.size(); j++){
             if (j == max_index_id || result_set.find((int)neighbour_with_indices[j][0]) != result_set.end())
                 continue;
             
@@ -1338,7 +1338,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             neighbour_with_indices[j][2] /= result.size();
             
 
-        }
+        }*/
     }
 
     
