@@ -1319,7 +1319,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
 
         //adjust index
         for(int j = 0; j < neighbour_with_indices.size(); j++){
-            if (j == max_index_id || result_set.find((int)neighbour_with_indices[j][0]) != result_set.end())
+            if ((int)neighbour_with_indices[j][0] == max_index_id || result_set.find((int)neighbour_with_indices[j][0]) != result_set.end())
                 continue;
             
             float d_i_j = _data_store->get_distance(max_index_id,(int)neighbour_with_indices[j][0]);
