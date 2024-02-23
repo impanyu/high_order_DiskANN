@@ -1233,7 +1233,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     */
     //std::cout<<"pool size: "<<pool.size()<<std::endl;
 
-    /*
+    
     std::vector<std::pair<float,int>> neighbour_with_indices;
     
     for (int i = 0; i < pool.size(); i++){
@@ -1255,7 +1255,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
 
         //std::cout<<"index: "<<index_1/index_2<<std::endl;
     
-        float index = pool.size() ==1? 1: index_1/index_2;
+        float index = pool.size() ==1? 1: index_1/pow(index_2,cur_exp);
         neighbour_with_indices.push_back(std::make_pair(index,pool[i].id));
         //std::cout<<"index in neighbour: "<<neighbour_with_indices[i].first<<std::endl;
     }
@@ -1275,8 +1275,8 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         result.push_back(neighbour_with_indices[i].second);
     }
 
-    return;*/
-    
+    return;
+    /*
     std::vector<std::vector<float>> neighbour_with_indices;
     for (int i = 0; i < pool.size(); i++){
         float index_1 = 0;
@@ -1306,7 +1306,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
                 continue;
             
             float cur_index = neighbour_with_indices[i][1]/pow(neighbour_with_indices[i][2],cur_exp);
-            std::cout<<cur_index<<std::endl;
+            //std::cout<<cur_index<<std::endl;
            if(cur_index > max_index ){
                max_index = cur_index;
                max_index_id = (int)neighbour_with_indices[i][0];
@@ -1350,7 +1350,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             }
             
         }
-    }
+    }*/
 }
 
 template <typename T, typename TagT, typename LabelT>
