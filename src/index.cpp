@@ -1267,7 +1267,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     });
 
     result.push_back(neighbour_with_indices[0].second);
-    for(int i = 1; i < neighbour_with_indices.size() && result.size()<degree; i++){
+    for(int i = 1; i < neighbour_with_indices.size() && result.size()<degree; i=i+2){
         //std::cout<<neighbour_with_indices[i].first<<std::endl;
         if (neighbour_with_indices[i].first < cur_alpha){
             break;
