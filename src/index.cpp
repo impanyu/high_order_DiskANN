@@ -1255,7 +1255,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
 
         //std::cout<<"index: "<<index_1/index_2<<std::endl;
     
-        float index = pool.size() ==1? 1: index_1/index_2;
+        float index = pool.size() ==1? 1: index_1/pow(index_2,cur_exp);
         neighbour_with_indices.push_back(std::make_pair(index,pool[i].id));
         //std::cout<<"index in neighbour: "<<neighbour_with_indices[i].first<<std::endl;
     }
@@ -1267,9 +1267,9 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     });
 
     result.push_back(neighbour_with_indices[0].second);
-    for(int i = 1; i < neighbour_with_indices.size(); i++){
+    for(int i = 1; i < neighbour_with_indices.size() && result.size()<degree; i++){
         //std::cout<<neighbour_with_indices[i].first<<std::endl;
-        if (neighbour_with_indices[i].first < cur_alpha ){
+        if (neighbour_with_indices[i].first < cur_alpha){
             break;
         }
         result.push_back(neighbour_with_indices[i].second);
