@@ -1230,6 +1230,8 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     k_medoids(std::min(l,init_r-1),location,pool,result);
     */
     //std::cout<<"pool size: "<<pool.size()<<std::endl;
+
+    /*
     std::vector<std::pair<float,int>> neighbour_with_indices;
     
     for (int i = 0; i < pool.size(); i++){
@@ -1271,23 +1273,22 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         result.push_back(neighbour_with_indices[i].second);
     }
 
-    return;
-    /*
+    return;*/
+    
     std::vector<std::vector<float>> neighbour_with_indices;
     for (int i = 0; i < pool.size(); i++){
-        float index = 0;
+        float index_1 = 0;
+        float index_2 = 1;
         for (int j = 0; j<pool.size();j++){
             if (i==j)   continue;
             float d_i_j = _data_store->get_distance(pool[i].id,pool[j].id);
             float d_j = pool[j].distance;
-            index += d_j/(d_i_j+1e-6);       
+            index_1 += d_j/(d_i_j+1e-6);       
         }
     
-        index = pool.size()==1? 1 : index/(pool.size()-1);
-        neighbour_with_indices.push_back({static_cast<float>(pool[i].id),index,1});
-        std::cout<<"0: "<<neighbour_with_indices[i][0]<<std::endl;
-        std::cout<<"1: "<<neighbour_with_indices[i][1]<<std::endl;
-        std::cout<<"2: "<<neighbour_with_indices[i][2]<<std::endl;
+        index_1 = pool.size()==1? 1 : index_1/(pool.size()-1);
+        neighbour_with_indices.push_back({static_cast<float>(pool[i].id),index_1,index_2});
+
     }
 
 
@@ -1316,22 +1317,24 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         result.push_back(max_index_id);
         //adjust index
         for(int j = 0; j < neighbour_with_indices.size(); j++){
-            if(result_set.find((int)neighbour_with_indices[j][0]) == result_set.end()){
-                float d_i_j = _data_store->get_distance(max_index_id,(int)neighbour_with_indices[j][0]);
-                float d_i = pool[max_index_id].distance;
-                float d_j = pool[(int)neighbour_with_indices[j][0]].distance;
-                neighbour_with_indices[j][1] *= (pool.size() - result.size()-1+1);
-                neighbour_with_indices[j][1] -= d_i/(d_i_j+1e-6);
-                neighbour_with_indices[j][1] /= (pool.size() - result.size()-1) == 0? 1 : (pool.size() - result.size()-1);
-                neighbour_with_indices[j][2] *= result.size()+1-1; 
-                neighbour_with_indices[j][2] += d_j/(d_i_j+1e-6);
-                neighbour_with_indices[j][2] /= result.size()+1;
-            }
+            if (j == max_index_id || result_set.find((int)neighbour_with_indices[j][0]) != result_set.end())
+                continue;
+            
+            float d_i_j = _data_store->get_distance(max_index_id,(int)neighbour_with_indices[j][0]);
+            float d_i = pool[max_index_id].distance;
+            float d_j = pool[(int)neighbour_with_indices[j][0]].distance;
+            neighbour_with_indices[j][1] *= (pool.size() - result.size()-1+1);
+            neighbour_with_indices[j][1] -= d_i/(d_i_j+1e-6);
+            neighbour_with_indices[j][1] /= (pool.size() - result.size()-1) == 0? 1 : (pool.size() - result.size()-1);
+            neighbour_with_indices[j][2] *= result.size()+1-1; 
+            neighbour_with_indices[j][2] += d_j/(d_i_j+1e-6);
+            neighbour_with_indices[j][2] /= result.size()+1;
+            
 
         }
     }
 
-    */
+    
 
   
 }
