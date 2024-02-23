@@ -1233,7 +1233,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     */
     //std::cout<<"pool size: "<<pool.size()<<std::endl;
 
-    
+    /*
     std::vector<std::pair<float,int>> neighbour_with_indices;
     
     for (int i = 0; i < pool.size(); i++){
@@ -1267,7 +1267,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     });
 
     result.push_back(neighbour_with_indices[0].second);
-    for(int i = 1; i < neighbour_with_indices.size() && result.size()<degree; i=i+2){
+    for(int i = 1; i < neighbour_with_indices.size() && result.size()<degree; i=i+1){
         //std::cout<<neighbour_with_indices[i].first<<std::endl;
         if (neighbour_with_indices[i].first < cur_alpha){
             break;
@@ -1275,8 +1275,8 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         result.push_back(neighbour_with_indices[i].second);
     }
 
-    return;
-    /*
+    return;*/
+    
     std::vector<std::vector<float>> neighbour_with_indices;
     for (int i = 0; i < pool.size(); i++){
         float index_1 = 0;
@@ -1289,7 +1289,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         }
     
         index_1 = pool.size()==1? 1 : index_1/(pool.size()-1);
-        neighbour_with_indices.push_back({static_cast<float>(i),index_1,index_2});
+        neighbour_with_indices.push_back({index_1,index_2});
 
     }
 
@@ -1301,15 +1301,15 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         int max_index_id = 0; //id in pool
         //find the node with max index
         for (int i = 0; i < neighbour_with_indices.size(); i++){
-            int actual_id = pool[(int)neighbour_with_indices[i][0]].id;
+            int actual_id = pool[i].id;
             if(result_set.find(actual_id) != result_set.end())
                 continue;
             
-            float cur_index = neighbour_with_indices[i][1]/pow(neighbour_with_indices[i][2],cur_exp);
+            float cur_index = neighbour_with_indices[i][0]/pow(neighbour_with_indices[i][1],cur_exp);
             //std::cout<<cur_index<<std::endl;
            if(cur_index > max_index ){
                max_index = cur_index;
-               max_index_id = (int)neighbour_with_indices[i][0];
+               max_index_id = i;
            }
         }
         
@@ -1322,35 +1322,35 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
 
         //adjust index
         for(int j = 0; j < neighbour_with_indices.size(); j++){
-            int actual_id = pool[(int)neighbour_with_indices[j][0]].id;
+            int actual_id = pool[j].id;
             if (result_set.find(actual_id) != result_set.end())
                 continue;
             
             float d_i_j = _data_store->get_distance(pool[max_index_id].id,actual_id);
             
-            float d_j = pool[(int)neighbour_with_indices[j][0]].distance;
+            float d_j = pool[j].distance;
             
             if (result.size() == pool.size()-1){
-                neighbour_with_indices[j][1] = 1;
+                neighbour_with_indices[j][0] = 1;
             }
             else{
-                neighbour_with_indices[j][1] *= (pool.size() - result.size()-1+1);
-                neighbour_with_indices[j][1] -= d_i/(d_i_j+1e-6);
-                neighbour_with_indices[j][1] /= (pool.size() - result.size()-1);
+                neighbour_with_indices[j][0] *= (pool.size() - result.size()-1+1);
+                neighbour_with_indices[j][0] -= d_i/(d_i_j+1e-6);
+                neighbour_with_indices[j][0] /= (pool.size() - result.size()-1);
             }
 
             
             if (result.size() ==1){
-                neighbour_with_indices[j][2] = d_j/(d_i_j+1e-6);
+                neighbour_with_indices[j][1] = d_j/(d_i_j+1e-6);
             }
             else{
-                neighbour_with_indices[j][2] *= result.size()-1;
-                neighbour_with_indices[j][2] += d_j/(d_i_j+1e-6);
-                neighbour_with_indices[j][2] /= result.size();
+                neighbour_with_indices[j][1] *= result.size()-1;
+                neighbour_with_indices[j][1] += d_j/(d_i_j+1e-6);
+                neighbour_with_indices[j][1] /= result.size();
             }
             
         }
-    }*/
+    }
 }
 
 template <typename T, typename TagT, typename LabelT>
