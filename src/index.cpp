@@ -1243,15 +1243,20 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
                 tmp_pool.push_back(*iter);
             }
         } */
-        cur_alpha -= .2;  
-
+        if (cur_alpha2>1){
+           cur_alpha2 -= .2;
+        }
+        else{
+          cur_alpha2 = 1.2;
+          cur_alpha -= .2;  
+        }
    /*tmp_pool.clear();
    for(auto iter = result.begin(); iter != result.end(); ++iter){
        auto d = _data_store->get_distance(location, *iter);
        tmp_pool.push_back(Neighbor(*iter, d));
        }
 */
-    } while(false);//(cur_alpha >1 && result.size() > degree);
+    } while(result.size() > degree);
     if (result.size()>degree)
        result.resize(degree);
   /*
