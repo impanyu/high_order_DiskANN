@@ -69,6 +69,8 @@ template <typename T> inline void add_variant(py::module_ &m, const Variant &var
         return ids;}, py::arg("query"), py::arg("knn") = 10, py::arg("complexity"))
         .def("search_with_filter", &diskannpy::StaticMemoryIndex<T>::search_with_filter, "query"_a, "knn"_a,
              "complexity"_a, "filter"_a)
+        .def("optimize_index_layout", [](diskannpy::StaticMemoryIndex<T> &self) {  
+            self._index.optimize_index_layout();})
         .def("batch_search", &diskannpy::StaticMemoryIndex<T>::batch_search, "queries"_a, "num_queries"_a, "knn"_a,
              "complexity"_a, "num_threads"_a)
         .def("batch_search_with_optimized_layout", [](diskannpy::StaticMemoryIndex<T> &self,

@@ -328,3 +328,6 @@ class StaticMemoryIndex:
             complexity=complexity
         )
         return QueryResponseBatch(identifiers=neighbors, distances=[])
+    
+    def optimize_index_layout(self):
+        self._index.optimize_index_layout()
