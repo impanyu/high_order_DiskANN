@@ -1354,7 +1354,7 @@ template <typename T, typename TagT, typename LabelT> void Index<T, TagT, LabelT
     else
         _start = calculate_entry_point();
 
-    const unsigned NUM_RNDS = 2;
+    const unsigned NUM_RNDS = 1;
     float last_round_alpha = _indexingAlpha;
     _indexingAlpha = 1;
     diskann::Timer link_timer;
