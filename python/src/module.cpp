@@ -66,7 +66,7 @@ template <typename T> inline void add_variant(py::module_ &m, const Variant &var
         py::array_t<unsigned> ids(knn);
         self._index.search_with_optimized_layout(query.data(), knn,
                                    l_search, ids.mutable_data());
-        return ids;}, py::arg("query"), py::arg("knn") = 10, py::arg("l_search"))
+        return ids;}, py::arg("query"), py::arg("knn") = 10, py::arg("complexity"))
         .def("search_with_filter", &diskannpy::StaticMemoryIndex<T>::search_with_filter, "query"_a, "knn"_a,
              "complexity"_a, "filter"_a)
         .def("batch_search", &diskannpy::StaticMemoryIndex<T>::batch_search, "queries"_a, "num_queries"_a, "knn"_a,
@@ -84,7 +84,7 @@ template <typename T> inline void add_variant(py::module_ &m, const Variant &var
           self._index.search_with_optimized_layout(queries.data(i), knn,
                                      l_search, ids.mutable_data(i * knn));
         }
-        return ids;}, py::arg("queries"), py::arg("knn") = 10, py::arg("num_queries"),py::arg("l_search"));
+        return ids;}, py::arg("queries"), py::arg("knn") = 10, py::arg("num_queries"),py::arg("complexity"));
 
     py::class_<diskannpy::DynamicMemoryIndex<T>>(m, variant.dynamic_memory_index_name.c_str())
         .def(py::init<const diskann::Metric, const size_t, const size_t, const uint32_t, const uint32_t, const bool,
