@@ -1244,11 +1244,11 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             }
         } */
         if (cur_alpha2>1){
-           cur_alpha2 -= .2;
+           cur_alpha2 -= .1;
         }
         else{
           cur_alpha2 = 1.2;
-          cur_alpha -= .2;  
+          cur_alpha -= .1;  
         }
    /*tmp_pool.clear();
    for(auto iter = result.begin(); iter != result.end(); ++iter){
