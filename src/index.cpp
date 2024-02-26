@@ -1135,7 +1135,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     occlude_factor.insert(occlude_factor.end(), pool.size(), 0.0f);
 
     //float cur_alpha = 1;
-    int alphas_length =  _indexingAlphas[1];
+    int alphas_length =  _indexingAlphas[2];
     std::vector<float> alphas(alphas_length, 1);
     std::unordered_set<uint32_t> result_set;
 
@@ -1153,16 +1153,16 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     */
    //float cur_alpha = 1;
     float cur_alpha = _indexingAlphas[0];
+    float cur_alpha2 = _indexingAlphas[1];
     do{
     //while (cur_alpha <= _indexingAlphas[0] && result.size() < degree){
     result.clear();
     //for (int i = 1; i<=2;i++){
         //if (i==2)
           // cur_alpha = _indexingAlphas[0];
-    
-
+    alphas[0] = cur_alpha;
     for (int i = 1; i < alphas_length; i++){
-        alphas[i] =  cur_alpha;
+        alphas[i] =  cur_alpha2;
        // alphas[i] =  cur_alpha;
     }
 
@@ -1251,7 +1251,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
        tmp_pool.push_back(Neighbor(*iter, d));
        }
 */
-    } while(cur_alpha >1 && result.size() > degree*100);
+    } while(cur_alpha >1 && result.size() > degree);
     if (result.size()>degree)
        result.resize(degree);
   /*
