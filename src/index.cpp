@@ -1215,7 +1215,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     float cur_alpha = _indexingAlphas[0];
     float cur_exp = _indexingAlphas[1]; 
 
-    /*
+    
     int l = 1;
     int init_r = std::min(static_cast<std::size_t>(degree),pool.size())+1;
     int r = init_r;
@@ -1230,7 +1230,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         }
     }
     k_medoids(std::min(l,init_r-1),location,pool,result);
-    */
+    
     //std::cout<<"pool size: "<<pool.size()<<std::endl;
 
     /*
@@ -1276,7 +1276,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     }
 
     return;*/
-    
+    /*
     std::vector<std::vector<float>> neighbour_with_indices;
     for (int i = 0; i < pool.size(); i++){
         float index_1 = 0;
@@ -1350,7 +1350,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             }
             
         }
-    }
+    }*/
 }
 
 template <typename T, typename TagT, typename LabelT>
