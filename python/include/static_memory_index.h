@@ -34,7 +34,7 @@ template <typename DT> class StaticMemoryIndex
         py::array_t<DT, py::array::c_style | py::array::forcecast> &queries, uint64_t num_queries, uint64_t knn,
         uint64_t complexity, uint32_t num_threads);
 
-  private:
+  //private:
     diskann::Index<DT, StaticIdType, filterT> _index;
 };
 } // namespace diskannpy
