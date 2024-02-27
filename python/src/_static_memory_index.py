@@ -286,7 +286,7 @@ class StaticMemoryIndex:
         queries: VectorLikeBatch,
         k_neighbors: int,
         complexity: int,
-        num_threads: int,
+        num_queries: int,
     ) -> QueryResponseBatch:
         """
         Searches the index by a batch of query vectors.
@@ -312,7 +312,7 @@ class StaticMemoryIndex:
         )
         _assert_is_positive_uint32(k_neighbors, "k_neighbors")
         _assert_is_positive_uint32(complexity, "complexity")
-        _assert_is_nonnegative_uint32(num_threads, "num_threads")
+        #_assert_is_nonnegative_uint32(num_threads, "num_threads")
 
         if k_neighbors > complexity:
             warnings.warn(
@@ -320,7 +320,7 @@ class StaticMemoryIndex:
             )
             complexity = k_neighbors
 
-        num_queries, dim = _queries.shape
+        #num_queries, dim = _queries.shape
         neighbors = self._index.batch_search_with_optimized_layout(
             queries=_queries,
             num_queries=num_queries,
