@@ -1214,7 +1214,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
 
             if(layer[min_id] == 1 ){
                 result.push_back(min_id);
-                result_set.insert(min_id);
+                //result_set.insert(min_id);
        
                 if (result.size() >= degree){
                     break;
