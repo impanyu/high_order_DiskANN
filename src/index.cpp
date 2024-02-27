@@ -1139,7 +1139,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     std::vector<float> alphas(alphas_length, 1);
     std::unordered_set<uint32_t> result_set;
 
-    std::vector<Neighbor> tmp_pool(pool.begin(), pool.end());
+    //std::vector<Neighbor> tmp_pool(pool.begin(), pool.end());
  
     /*for (float val : alphas) {
         std::cout << val << " ";
@@ -1179,7 +1179,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     //initialize C and E for MST
     
     
-    for (auto iter = tmp_pool.begin();  iter != tmp_pool.end(); ++iter){
+    for (auto iter = pool.begin();  iter != pool.end(); ++iter){
  
         C[iter->id] = iter->distance;// _data_store->get_distance(iter->id, location);
         E[iter->id] = location;
@@ -1191,13 +1191,13 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     E[location] = -1;
     layer[location] = 0; 
     MST.insert(location);
-    std::sort(tmp_pool.begin(), tmp_pool.end());
+    //std::sort(tmp_pool.begin(), tmp_pool.end());
    
-    while(MST.size() < tmp_pool.size()+1){
+    while(MST.size() < pool.size()+1){
 
             float min = std::numeric_limits<float>::max();
             uint32_t min_id = 0;
-            for (auto iter = tmp_pool.begin();  iter != tmp_pool.end(); ++iter){
+            for (auto iter = pool.begin();  iter != pool.end(); ++iter){
                 if (MST.find(iter->id) == MST.end()){// && C[iter->id] < min){
                     //min = C[iter->id];
                     min_id = iter->id;
@@ -1226,7 +1226,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             }
 
             //modify C and E based on current layer of min_id
-            for (auto iter = tmp_pool.begin();  iter != tmp_pool.end(); ++iter){
+            for (auto iter = pool.begin();  iter != pool.end(); ++iter){
                 auto d = _data_store->get_distance(iter->id, min_id) * alphas[layer[min_id]];
                 if (MST.find(iter->id) == MST.end() && d < C[iter->id]){
                     C[iter->id] = d;
