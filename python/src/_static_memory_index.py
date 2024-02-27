@@ -176,6 +176,60 @@ class StaticMemoryIndex:
                 filter=filter
             )
         return QueryResponse(identifiers=neighbors, distances=distances)
+    
+
+    def search_with_optimized_layout(
+            self, query: VectorLike, k_neighbors: int, complexity: int, filter_label: str = ""
+    ) -> QueryResponse:
+        """
+        Searches the index by a single query vector.
+
+        ### Parameters
+        - **query**: 1d numpy array of the same dimensionality and dtype of the index.
+        - **k_neighbors**: Number of neighbors to be returned. If query vector exists in index, it almost definitely
+          will be returned as well, so adjust your ``k_neighbors`` as appropriate. Must be > 0.
+        - **complexity**: Size of distance ordered list of candidate neighbors to use while searching. List size
+          increases accuracy at the cost of latency. Must be at least k_neighbors in size.
+        """
+        if filter_label != "":
+            if len(self._labels_map) == 0:
+                raise ValueError(
+                    f"A filter label of {filter_label} was provided, but this class was not initialized with filters "
+                    "enabled, e.g. StaticDiskMemory(..., enable_filters=True)"
+                )
+            if filter_label not in self._labels_map:
+                raise ValueError(
+                    f"A filter label of {filter_label} was provided, but the external(str)->internal(np.uint32) labels map "
+                    f"does not include that label."
+                )
+            k_neighbors = min(k_neighbors, self._labels_metadata[filter_label])
+        _query = _castable_dtype_or_raise(query, expected=self._vector_dtype)
+        _assert(len(_query.shape) == 1, "query vector must be 1-d")
+        _assert(
+            _query.shape[0] == self._dimensions,
+            f"query vector must have the same dimensionality as the index; index dimensionality: {self._dimensions}, "
+            f"query dimensionality: {_query.shape[0]}",
+            )
+        _assert_is_positive_uint32(k_neighbors, "k_neighbors")
+        _assert_is_nonnegative_uint32(complexity, "complexity")
+
+        if k_neighbors > complexity:
+            warnings.warn(
+                f"k_neighbors={k_neighbors} asked for, but list_size={complexity} was smaller. Increasing {complexity} to {k_neighbors}"
+            )
+            complexity = k_neighbors
+
+        if filter_label == "":
+            neighbors = self._index.search_with_optimized_layout(query=_query, knn=k_neighbors, complexity=complexity)
+        else:
+            filter = self._labels_map[filter_label]
+            neighbors, distances = self._index.search_with_filter(
+                query=query,
+                knn=k_neighbors,
+                complexity=complexity,
+                filter=filter
+            )
+        return QueryResponse(identifiers=neighbors, distances=[])
 
 
     def batch_search(
@@ -226,3 +280,54 @@ class StaticMemoryIndex:
             num_threads=num_threads,
         )
         return QueryResponseBatch(identifiers=neighbors, distances=distances)
+    
+    def batch_search_with_optimized_layout(
+        self,
+        queries: VectorLikeBatch,
+        k_neighbors: int,
+        complexity: int,
+        num_queries: int,
+    ) -> QueryResponseBatch:
+        """
+        Searches the index by a batch of query vectors.
+
+        This search is parallelized and far more efficient than searching for each vector individually.
+
+        ### Parameters
+        - **queries**: 2d numpy array, with column dimensionality matching the index and row dimensionality being the
+          number of queries intended to search for in parallel. Dtype must match dtype of the index.
+        - **k_neighbors**: Number of neighbors to be returned. If query vector exists in index, it almost definitely
+          will be returned as well, so adjust your ``k_neighbors`` as appropriate. Must be > 0.
+        - **complexity**: Size of distance ordered list of candidate neighbors to use while searching. List size
+          increases accuracy at the cost of latency. Must be at least k_neighbors in size.
+        - **num_threads**: Number of threads to use when searching this index. (>= 0), 0 = num_threads in system
+        """
+
+        _queries = _castable_dtype_or_raise(queries, expected=self._vector_dtype)
+        _assert(len(_queries.shape) == 2, "queries must must be 2-d np array")
+        _assert(
+            _queries.shape[1] == self._dimensions,
+            f"query vectors must have the same dimensionality as the index; index dimensionality: {self._dimensions}, "
+            f"query dimensionality: {_queries.shape[1]}",
+        )
+        _assert_is_positive_uint32(k_neighbors, "k_neighbors")
+        _assert_is_positive_uint32(complexity, "complexity")
+        #_assert_is_nonnegative_uint32(num_threads, "num_threads")
+
+        if k_neighbors > complexity:
+            warnings.warn(
+                f"k_neighbors={k_neighbors} asked for, but list_size={complexity} was smaller. Increasing {complexity} to {k_neighbors}"
+            )
+            complexity = k_neighbors
+
+        #num_queries, dim = _queries.shape
+        neighbors = self._index.batch_search_with_optimized_layout(
+            queries=_queries,
+            num_queries=num_queries,
+            knn=k_neighbors,
+            complexity=complexity
+        )
+        return QueryResponseBatch(identifiers=neighbors, distances=[])
+    
+    def optimize_index_layout(self):
+        self._index.optimize_index_layout()
