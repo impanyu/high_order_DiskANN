@@ -1135,9 +1135,9 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     occlude_factor.insert(occlude_factor.end(), pool.size(), 0.0f);
 
     //float cur_alpha = 1;
-    int alphas_length =  _indexingAlphas[2];
+    int alphas_length =  2;// _indexingAlphas[2];
     std::vector<float> alphas(alphas_length, 1);
-    std::unordered_set<uint32_t> result_set;
+    //std::unordered_set<uint32_t> result_set;
 
     //std::vector<Neighbor> tmp_pool(pool.begin(), pool.end());
  
@@ -1152,19 +1152,23 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         alphas[1] = _indexingAlphas[0];
     */
    //float cur_alpha = 1;
-    float cur_alpha = _indexingAlphas[0];
+    //float cur_alpha = _indexingAlphas[0];
     float cur_alpha2 = _indexingAlphas[1];
-    do{
+    std::vector<uint32_t> cur_result;
+    float cur_score = std::numeric_limits<float>::max();
+
+    for(float cur_alpha = _indexingAlphas[0];cur_alpha>=1; cur_alpha = cur_alpha - 0.2){
     //while (cur_alpha <= _indexingAlphas[0] && result.size() < degree){
-    result.clear();
+    cur_result.clear();
     //for (int i = 1; i<=2;i++){
         //if (i==2)
           // cur_alpha = _indexingAlphas[0];
-    alphas[1] = cur_alpha;
-    for (int i = 2; i < alphas_length; i++){
-        alphas[i] =  cur_alpha2;
+
+    //alphas[1] = cur_alpha;
+    //for (int i = 2; i < alphas_length; i++){
+       // alphas[i] =  cur_alpha2;
        // alphas[i] =  cur_alpha;
-    }
+    //}
 
     
 
@@ -1213,12 +1217,12 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             layer[min_id] = layer[E[min_id]]+1;
 
             if(layer[min_id] == 1 ){
-                result.push_back(min_id);
+                cur_result.push_back(min_id);
                 //result_set.insert(min_id);
        
-                /*if (result.size() >= degree){
+                if (cur_result.size() > degree){
                     break;
-                }*/
+                }
             }
 
             if(layer[min_id] == alphas_length){
@@ -1244,22 +1248,39 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
                 tmp_pool.push_back(*iter);
             }
         } */
-        if (cur_alpha2>1){
+        /*if (cur_alpha2>1){
            cur_alpha2 -= .1;
         }
         else{
           cur_alpha2 = 1.2;
           cur_alpha -= .1;  
-        }
+        }*/
    /*tmp_pool.clear();
    for(auto iter = result.begin(); iter != result.end(); ++iter){
        auto d = _data_store->get_distance(location, *iter);
        tmp_pool.push_back(Neighbor(*iter, d));
        }
 */
-    } while(cur_alpha>1 && result.size() > degree);
-    if (result.size()>degree)
-       result.resize(degree);
+    if(cur_result.size()> degree){
+        continue;
+    }
+    else{
+        float score = 0;
+        for (auto iter = pool.begin();  iter != pool.end(); ++iter){
+            if (E[iter->id] == location) continue;
+            score += _data_store->get_distance(iter->id, E[iter->id])/(iter->distance+1e-6);
+        }
+        score = score/(pool.size())*cur_result.size();
+        if (score < cur_score){
+            cur_score = score;
+            result = cur_result;
+        }
+    }
+ 
+    
+    } //while(cur_alpha>1 && result.size() > degree);
+   // if (result.size()>degree)
+    //   result.resize(degree);
   /*
      if (result.size() > degree){
            std::shuffle(result.begin(), result.end(), std::default_random_engine());
@@ -1276,7 +1297,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         }
     }*/
 
-   
+
   
 }
 
