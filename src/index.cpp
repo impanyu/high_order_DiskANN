@@ -1154,11 +1154,12 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     */
    //float cur_alpha = 1;
     //float cur_alpha = _indexingAlphas[0];
-    float cur_alpha2 = _indexingAlphas[1];
+    //float cur_alpha2 = _indexingAlphas[1];
     std::vector<uint32_t> cur_result;
     float score = std::numeric_limits<float>::max();
 
-    for(float cur_alpha = _indexingAlphas[0];cur_alpha>=1; cur_alpha = cur_alpha - 0.1){
+    for(float cur_alpha = _indexingAlphas[0];cur_alpha>=1; cur_alpha = cur_alpha - 0.05){
+        for(float cur_alpha2 = _indexingAlphas[1]; cur_alpha2>=1 ; cur_alpha2 = cur_alpha2 - 0.05){
     //while (cur_alpha <= _indexingAlphas[0] && result.size() < degree){
     cur_result.clear();
     //for (int i = 1; i<=2;i++){
@@ -1279,8 +1280,9 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             score = cur_score;
             result = cur_result;
         }
-        result = cur_result;
-        break;
+        //result = cur_result;
+        //break;
+    }
     }
  
     
