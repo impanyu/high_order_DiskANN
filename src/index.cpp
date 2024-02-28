@@ -1296,7 +1296,6 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             result = cur_result;
             best_alpha = cur_alpha;
             best_alpha2 = cur_alpha2;
-            
         }
         //result = cur_result;
         //break;
