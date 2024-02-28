@@ -1136,7 +1136,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     occlude_factor.insert(occlude_factor.end(), pool.size(), 0.0f);
 
     //float cur_alpha = 1;
-    int alphas_length =  2;// _indexingAlphas[2];
+    int alphas_length =   _indexingAlphas[2];
     std::vector<float> alphas(alphas_length, 1);
     //std::unordered_set<uint32_t> result_set;
 
@@ -1272,9 +1272,9 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             cur_score += _data_store->get_distance(iter->id, E[iter->id])/(iter->distance+1e-6);
         }
         cur_score = cur_score/(pool.size());
-        std::cout<<"cur_score: "<<cur_score<<" cur_size: "<<cur_result.size();
+        //std::cout<<"cur_score: "<<cur_score<<" cur_size: "<<cur_result.size();
         cur_score = cur_score* cur_result.size();//pool.size();
-        std::cout<<" cur_total_score: "<<cur_score<<" cur_alpha: "<<cur_alpha<<std::endl;
+        //std::cout<<" cur_total_score: "<<cur_score<<" cur_alpha: "<<cur_alpha<<std::endl;
         if (cur_score < score){
             score = cur_score;
             result = cur_result;
