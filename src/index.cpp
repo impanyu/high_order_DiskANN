@@ -27,6 +27,7 @@
 #include <unordered_set>
 #include <algorithm>
 #include <random>
+#include <cmath> // Include to use pow
 
 namespace diskann
 {
@@ -1270,7 +1271,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             if (E[iter->id] == location) continue;
             cur_score += _data_store->get_distance(iter->id, E[iter->id])/(iter->distance+1e-6);
         }
-        cur_score = (cur_score/(pool.size())*5) + cur_result.size()/pool.size();
+        cur_score = pow(cur_score/(pool.size())*5,2) + cur_result.size()/pool.size();
         if (cur_score < score){
             score = cur_score;
             result = cur_result;
