@@ -1112,6 +1112,16 @@ void Index<T, TagT, LabelT>::search_for_point_and_prune(int location, uint32_t L
     assert(_graph_store->get_total_points() == _max_points + _num_frozen_pts);
 }
 
+template <typename T, typename TagT, typename LabelT>
+uint32_t Index<T, TagT, LabelT>::find_medoid(const uint32_t location,std::unordered_map<uint32_t,uint32_t>& E, uint32_t id){
+    //find the ancestor of id in the MST
+    uint32_t ancestor = id;
+    while(E[ancestor] != location){
+        ancestor = E[ancestor];
+    } 
+    return ancestor;
+
+}
 
 
 template <typename T, typename TagT, typename LabelT>
@@ -1272,8 +1282,9 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     else{
         float cur_score = 0;
         for (auto iter = pool.begin();  iter != pool.end(); ++iter){
-            if (E[iter->id] == location) continue;
-            cur_score += _data_store->get_distance(iter->id, E[iter->id])/(iter->distance+1e-6);
+            if (E[iter->id] == location) continue; 
+            uint32_t medoid = find_medoid(location, E, iter->id);             
+            cur_score += _data_store->get_distance(iter->id, medoid)/(iter->distance+1e-6);
         }
         cur_score = cur_score/(pool.size());
         //std::cout<<"cur_score: "<<cur_score<<" cur_size: "<<cur_result.size()<<" pool_size: "<<pool.size();
