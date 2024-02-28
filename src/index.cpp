@@ -1305,7 +1305,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
  
     
     } //while(cur_alpha>1 && result.size() > degree);
-    //std::cout<<" best_alpha: "<<best_alpha<<" best_alpha2: "<<best_alpha2;
+    std::cout<<" best_alpha: "<<best_alpha<<" best_alpha2: "<<best_alpha2;
    // if (result.size()>degree)
     //   result.resize(degree);
   /*
