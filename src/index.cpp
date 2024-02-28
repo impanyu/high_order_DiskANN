@@ -1276,11 +1276,11 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
        tmp_pool.push_back(Neighbor(*iter, d));
        }
 */
-    if(cur_result.size()> degree){
+    /*if(cur_result.size()> degree){
         result = cur_result;
         continue;
-    }
-    else{
+    }*/
+    //else{
         float cur_score = 0;
         for (auto iter = pool.begin();  iter != pool.end(); ++iter){
             if (E[iter->id] == location) continue; 
@@ -1289,7 +1289,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         }
         cur_score = cur_score/(pool.size());
         std::cout<<"alpha: "<<cur_alpha<<" alpha2: "<<cur_alpha2;
-        std::cout<<"cur_score: "<<cur_score<<" cur_size/pool_size: "<<((float)cur_result.size())/pool.size();
+        std::cout<<" cur_score: "<<cur_score<<" cur_size/pool_size: "<<((float)cur_result.size())/pool.size();
         cur_score = cur_score+ ((float)cur_result.size())/pool.size();
         std::cout<<" cur_total_score: "<<cur_score<<std::endl;
         if (cur_score < score){
@@ -1300,7 +1300,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         }
         //result = cur_result;
         //break;
-    }
+   // }
     }
  
     
