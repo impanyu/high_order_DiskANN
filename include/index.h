@@ -264,7 +264,7 @@ template <typename T, typename TagT = uint32_t, typename LabelT = uint32_t> clas
                          InMemQueryScratch<T> *scratch);
 
     
-   uint32_t Index<T, TagT, LabelT>::find_medoid(const uint32_t location,std::unordered_map<uint32_t,uint32_t>& E,uint32_t id);
+   uint32_t find_medoid(const uint32_t location,std::unordered_map<uint32_t,uint32_t>& E,uint32_t id);
 
     // Prunes candidates in @pool to a shorter list @result
     // @pool must be sorted before calling
