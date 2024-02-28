@@ -1288,7 +1288,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             cur_score += _data_store->get_distance(iter->id, medoid)/(iter->distance+1e-6);
         }
         cur_score = cur_score/(pool.size());
-        std::cout<<"alpha: "<<alpha<<" alpha2: "<<cur_alpha2;
+        std::cout<<"alpha: "<<cur_alpha<<" alpha2: "<<cur_alpha2;
         std::cout<<"cur_score: "<<cur_score<<" cur_size/pool_size: "<<((float)cur_result.size())/pool.size();
         cur_score = cur_score+ ((float)cur_result.size())/pool.size();
         std::cout<<" cur_total_score: "<<cur_score<<std::endl;
