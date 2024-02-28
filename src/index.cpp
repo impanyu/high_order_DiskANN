@@ -1273,7 +1273,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         }
         std::cout<<"cur_score: "<<cur_score;
         cur_score = cur_score/(pool.size())* cur_result.size();//pool.size();
-        std::cout<<"cur_total_score: "<<cur_score<<" cur_alpha: "<<cur_alpha<<std::endl;
+        std::cout<<" cur_total_score: "<<cur_score<<" cur_alpha: "<<cur_alpha<<std::endl;
         if (cur_score < score){
             score = cur_score;
             result = cur_result;
