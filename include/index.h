@@ -263,6 +263,9 @@ template <typename T, typename TagT = uint32_t, typename LabelT = uint32_t> clas
                          const uint32_t max_candidate_size, const float alpha, std::vector<uint32_t> &pruned_list,
                          InMemQueryScratch<T> *scratch);
 
+    
+   uint32_t Index<T, TagT, LabelT>::find_medoid(const uint32_t location,std::unordered_map<uint32_t,uint32_t>& E,uint32_t id);
+
     // Prunes candidates in @pool to a shorter list @result
     // @pool must be sorted before calling
     void occlude_list(const uint32_t location, std::vector<Neighbor> &pool, const float alpha, const uint32_t degree,
