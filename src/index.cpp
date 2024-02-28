@@ -1274,9 +1274,9 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             cur_score += _data_store->get_distance(iter->id, E[iter->id])/(iter->distance+1e-6);
         }
         cur_score = cur_score/(pool.size());
-        //std::cout<<"cur_score: "<<cur_score<<" cur_size: "<<cur_result.size();
+        std::cout<<"cur_score: "<<cur_score<<" cur_size: "<<cur_result.size()<<" pool_size: "<<pool.size();
         cur_score = cur_score+ ((float)cur_result.size())/pool.size();
-        //std::cout<<" cur_total_score: "<<cur_score<<" cur_alpha: "<<cur_alpha<<std::endl;
+        std::cout<<" cur_total_score: "<<cur_score<<" cur_alpha: "<<cur_alpha<<std::endl;
         if (cur_score < score){
             score = cur_score;
             result = cur_result;
@@ -1289,7 +1289,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
  
     
     } //while(cur_alpha>1 && result.size() > degree);
-    std::cout<<" cur_alpha: "<<cur_alpha<<" cur_alpha2: "<<cur_alpha2;
+    //std::cout<<" cur_alpha: "<<cur_alpha<<" cur_alpha2: "<<cur_alpha2;
    // if (result.size()>degree)
     //   result.resize(degree);
   /*
