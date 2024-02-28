@@ -1289,7 +1289,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
  
     
     } //while(cur_alpha>1 && result.size() > degree);
-    std::cout<<"cur_alpha: "<<cur_alpha<<" cur_alpha2: "<<cur_alpha2.size();
+    std::cout<<"cur_alpha: "<<cur_alpha<<" cur_alpha2: "<<cur_alpha2;
    // if (result.size()>degree)
     //   result.resize(degree);
   /*
