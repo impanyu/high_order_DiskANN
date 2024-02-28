@@ -1270,7 +1270,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             if (E[iter->id] == location) continue;
             cur_score += _data_store->get_distance(iter->id, E[iter->id])/(iter->distance+1e-6);
         }
-        cur_score = cur_score/(pool.size())*cur_result.size();
+        cur_score = cur_score/(pool.size()) + cur_result.size()/pool.size();
         if (cur_score < score){
             score = cur_score;
             result = cur_result;
