@@ -1158,7 +1158,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     std::vector<uint32_t> cur_result;
     float score = std::numeric_limits<float>::max();
 
-    for(float cur_alpha = _indexingAlphas[0];cur_alpha>=1; cur_alpha = cur_alpha - 0.2){
+    for(float cur_alpha = _indexingAlphas[0];cur_alpha>=1; cur_alpha = cur_alpha - 0.02){
     //while (cur_alpha <= _indexingAlphas[0] && result.size() < degree){
     cur_result.clear();
     //for (int i = 1; i<=2;i++){
@@ -1271,7 +1271,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             if (E[iter->id] == location) continue;
             cur_score += _data_store->get_distance(iter->id, E[iter->id])/(iter->distance+1e-6);
         }
-        cur_score = pow(cur_score/(pool.size())*5,2) + cur_result.size()/pool.size();
+        cur_score = cur_score/(pool.size())* cur_result.size();//pool.size();
         if (cur_score < score){
             score = cur_score;
             result = cur_result;
