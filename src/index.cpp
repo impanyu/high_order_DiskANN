@@ -1331,7 +1331,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
 
 
     //std::cout<<" best_alpha: "<<best_alpha<<" best_alpha2: "<<best_alpha2;
-    std::cout<<location<<endl;
+    std::cout<<location<<std::endl;
    // if (result.size()>degree)
     //   result.resize(degree);
   /*
