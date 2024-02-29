@@ -1324,8 +1324,6 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             min_intercept = intercept;
             score = scores[i];
             result = results[i];
-            best_alpha = alphas[i];
-            best_alpha2 = alphas[i];
         }
     }   
 
