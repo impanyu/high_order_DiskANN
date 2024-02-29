@@ -1183,8 +1183,8 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
 
 
     for(;cur_alpha>=1; cur_alpha = cur_alpha - 0.05){
-        for(cur_alpha2 = _indexingAlphas[1]; cur_alpha2>=1; cur_alpha2 = cur_alpha2 - 0.05){
-            
+        for(cur_alpha2 = 1.2; cur_alpha2>=1; cur_alpha2 = cur_alpha2 - 0.05){
+
     //while (cur_alpha <= _indexingAlphas[0] && result.size() < degree){
     cur_result.clear();
     //for (int i = 1; i<=2;i++){
