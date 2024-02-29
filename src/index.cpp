@@ -1164,22 +1164,25 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         alphas[1] = _indexingAlphas[0];
     */
    //float cur_alpha = 1;
-    float cur_alpha = _indexingAlphas[0]+0.1;
-    float cur_alpha2 = _indexingAlphas[1]+0.1;
+    float cur_alpha = _indexingAlphas[0];
+    float cur_alpha2 = _indexingAlphas[1];
     std::vector<uint32_t> cur_result;
     float score = std::numeric_limits<float>::max();
     float best_alpha = cur_alpha;
     float best_alpha2 = cur_alpha2;
 
-    std::vector<std::vector<uint32_t>> results;
-    std::vector<float> scores;
-    std::vector<float> result_pool_sizes;
-    std::vector<float> cur_alphas;
-    std::vector<float> cur_alphas2;
+    //std::vector<std::vector<uint32_t>> results;
+    //std::vector<float> scores;
+    //std::vector<float> result_pool_sizes;
+    //std::vector<float> cur_alphas;
+   // std::vector<float> cur_alphas2;
+   bool first = true;
+   float first_score = 0;
 
 
-    for(;cur_alpha>=_indexingAlphas[0]-0.1; cur_alpha = cur_alpha - 0.05){
-        for(cur_alpha2 = _indexingAlphas[1]+0.1; cur_alpha2>=_indexingAlphas[1]-0.1; cur_alpha2 = cur_alpha2 - 0.05){
+    for(;cur_alpha>=1; cur_alpha = cur_alpha - 0.05){
+        for(cur_alpha2 = _indexingAlphas[1]; cur_alpha2>=1; cur_alpha2 = cur_alpha2 - 0.05){
+            
     //while (cur_alpha <= _indexingAlphas[0] && result.size() < degree){
     cur_result.clear();
     //for (int i = 1; i<=2;i++){
@@ -1295,14 +1298,30 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         cur_score += _data_store->get_distance(iter->id, medoid)/(iter->distance+1e-6);
     }
     cur_score = cur_score/(pool.size());
+    //float cur_result_pool_size = ((float)cur_result.size())/pool.size();
+    if (first){
+        first_score = cur_score;  
+        first = false;
+    }
+ 
+    
+    if (cur_score <= first_score*1.1){
+        result = cur_result;
+        score = cur_score;
+        best_alpha = cur_alpha;
+        best_alpha2 = cur_alpha2;
+    }
+    else{
+        break;
+    }
    // std::cout<<"alpha: "<<cur_alpha<<" alpha2: "<<cur_alpha2<<endl;
     //std::cout<<" cur_score: "<<cur_score<<" cur_size/pool_size: "<<((float)cur_result.size())/pool.size();
     //cur_score = cur_score+ ((float)cur_result.size())/pool.size();
-    scores.push_back(cur_score);
-    result_pool_sizes.push_back(((float)cur_result.size())/pool.size());
-    results.push_back(cur_result);
-    cur_alphas.push_back(cur_alpha);
-    cur_alphas2.push_back(cur_alpha2);
+    //scores.push_back(cur_score);
+    //result_pool_sizes.push_back(((float)cur_result.size())/pool.size());
+    //results.push_back(cur_result);
+    //cur_alphas.push_back(cur_alpha);
+    //cur_alphas2.push_back(cur_alpha2);
     //std::cout<<" cur_total_score: "<<cur_score<<std::endl;
     /*
     if (cur_score < score){
@@ -1316,7 +1335,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
    // }
       }
     } //while(cur_alpha>1 && result.size() > degree);
-
+ /*
     if(scores.size() == 1){
         result = results[0];
         return;
@@ -1334,7 +1353,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             best_alpha2 = cur_alphas2[i];
         }
     }   
-
+*/
 
 
     //std::cout<<" best_alpha: "<<best_alpha<<" best_alpha2: "<<best_alpha2;
