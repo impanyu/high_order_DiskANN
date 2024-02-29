@@ -1166,6 +1166,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
    //float cur_alpha = 1;
     float cur_alpha = _indexingAlphas[0];
     float cur_alpha2 = _indexingAlphas[1];
+    float rate = _indexingAlphas[3];
     std::vector<uint32_t> cur_result;
     float score = std::numeric_limits<float>::max();
     float best_alpha = cur_alpha;
@@ -1306,7 +1307,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     }
  
     
-    if (cur_score <= first_score*1.1){
+    if (cur_score <= first_score*rate){
         result = cur_result;
         score = cur_score;
         best_alpha = cur_alpha;
