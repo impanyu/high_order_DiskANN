@@ -1177,10 +1177,10 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     //std::vector<float> result_pool_sizes;
     //std::vector<float> cur_alphas;
    // std::vector<float> cur_alphas2;
-   bool first = true;
-   float first_score = 0;
-   float first_result_pool_size = 0;
-   bool stop = false;
+   //bool first = true;
+   float lowest_score = std::numeric_limits<float>::max();
+   //float first_result_pool_size = 0;
+   //bool stop = false;
 
 
     for(;cur_alpha>=1; cur_alpha = cur_alpha - 0.02){
@@ -1294,13 +1294,13 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         continue;
     }*/
     //else{
-    result = cur_result;
+    /*result = cur_result;
     if (cur_result.size() > degree){
         continue;
     }
     else {
         break;
-    }
+    }*/
 
     float cur_score = 0;
     for (auto iter = pool.begin();  iter != pool.end(); ++iter){
@@ -1310,14 +1310,17 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     }
     cur_score = cur_score/(pool.size());
     float cur_result_pool_size = ((float)cur_result.size())/pool.size();
-    if (first){
+    /*if (first){
         first_score = cur_score;  
         first_result_pool_size = cur_result_pool_size;
         first = false;
+    }*/
+    if (cur_score <= lowest_score){
+        lowest_score = cur_score;
     }
  
     
-    if (cur_score <= first_score*rate && cur_result_pool_size >= first_result_pool_size*0.8){
+    if (cur_score <= lowest_score*rate){
         result = cur_result;
         score = cur_score;
         best_alpha = cur_alpha;
