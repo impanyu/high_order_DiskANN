@@ -1174,6 +1174,8 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     std::vector<std::vector<uint32_t>> results;
     std::vector<float> scores;
     std::vector<float> result_pool_sizes;
+    std::vector<float> cur_alphas;
+    std::vector<float> cur_alphas2;
 
 
     for(;cur_alpha>=1; cur_alpha = cur_alpha - 0.05){
@@ -1299,6 +1301,8 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     scores.push_back(cur_score);
     result_pool_sizes.push_back(((float)cur_result.size())/pool.size());
     results.push_back(cur_result);
+    cur_alphas.push_back(cur_alpha);
+    cur_alphas2.push_back(cur_alpha2);
     //std::cout<<" cur_total_score: "<<cur_score<<std::endl;
     /*
     if (cur_score < score){
@@ -1317,6 +1321,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         result = results[0];
         return;
     }
+    
     float slope = (result_pool_sizes[0] - result_pool_sizes[result_pool_sizes.size()-1])/(scores[0] - scores[scores.size()-1]+1e-6);
     float min_intercept = std::numeric_limits<float>::max();
     for(int i =0; i< scores.size(); i++){
@@ -1325,13 +1330,15 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             min_intercept = intercept;
             score = scores[i];
             result = results[i];
+            best_alpha = cur_alphas[i];
+            best_alpha2 = cur_alphas2[i];
         }
     }   
 
 
 
-    //std::cout<<" best_alpha: "<<best_alpha<<" best_alpha2: "<<best_alpha2;
-    std::cout<<location<<std::endl;
+    std::cout<<" best_alpha: "<<best_alpha<<" best_alpha2: "<<best_alpha2;
+    
    // if (result.size()>degree)
     //   result.resize(degree);
   /*
