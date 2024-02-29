@@ -1293,6 +1293,9 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         continue;
     }*/
     //else{
+    if (cur_result.size() > degree){
+        continue;
+    }
     float cur_score = 0;
     for (auto iter = pool.begin();  iter != pool.end(); ++iter){
         if (E[iter->id] == location) continue; 
