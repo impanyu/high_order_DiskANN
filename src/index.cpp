@@ -1178,6 +1178,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
    // std::vector<float> cur_alphas2;
    bool first = true;
    float first_score = 0;
+   bool stop = false;
 
 
     for(;cur_alpha>=1; cur_alpha = cur_alpha - 0.05){
@@ -1312,6 +1313,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         best_alpha2 = cur_alpha2;
     }
     else{
+        stop = true;
         break;
     }
    // std::cout<<"alpha: "<<cur_alpha<<" alpha2: "<<cur_alpha2<<endl;
@@ -1334,6 +1336,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         //break;
    // }
       }
+      if (stop) break;
     } //while(cur_alpha>1 && result.size() > degree);
  /*
     if(scores.size() == 1){
