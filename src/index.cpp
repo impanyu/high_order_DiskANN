@@ -1170,6 +1170,10 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     float best_alpha = cur_alpha;
     float best_alpha2 = cur_alpha2;
 
+    std::vector<std::vector<uint32_t>> results;
+    std::vector<float> scores;
+    std::vector<float> result_pool_sizes;
+
 
     for(;cur_alpha>=1; cur_alpha = cur_alpha - 0.02){
         for(cur_alpha2 = _indexingAlphas[1]; cur_alpha2>=1 ; cur_alpha2 = cur_alpha2 - 0.02){
@@ -1281,30 +1285,52 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         continue;
     }*/
     //else{
-        float cur_score = 0;
-        for (auto iter = pool.begin();  iter != pool.end(); ++iter){
-            if (E[iter->id] == location) continue; 
-            uint32_t medoid = find_medoid(location, E, iter->id);             
-            cur_score += _data_store->get_distance(iter->id, medoid)/(iter->distance+1e-6);
-        }
-        cur_score = cur_score/(pool.size());
-        std::cout<<"alpha: "<<cur_alpha<<" alpha2: "<<cur_alpha2;
-        std::cout<<" cur_score: "<<cur_score<<" cur_size/pool_size: "<<((float)cur_result.size())/pool.size();
-        cur_score = cur_score+ ((float)cur_result.size())/pool.size();
-        std::cout<<" cur_total_score: "<<cur_score<<std::endl;
-        if (cur_score < score){
-            score = cur_score;
-            result = cur_result;
-            best_alpha = cur_alpha;
-            best_alpha2 = cur_alpha2;
-        }
+    float cur_score = 0;
+    for (auto iter = pool.begin();  iter != pool.end(); ++iter){
+        if (E[iter->id] == location) continue; 
+        uint32_t medoid = find_medoid(location, E, iter->id);             
+        cur_score += _data_store->get_distance(iter->id, medoid)/(iter->distance+1e-6);
+    }
+    cur_score = cur_score/(pool.size());
+    //std::cout<<"alpha: "<<cur_alpha<<" alpha2: "<<cur_alpha2;
+    //std::cout<<" cur_score: "<<cur_score<<" cur_size/pool_size: "<<((float)cur_result.size())/pool.size();
+    //cur_score = cur_score+ ((float)cur_result.size())/pool.size();
+    scores.push_back(cur_score);
+    result_pool_sizes.push_back(((float)cur_result.size())/pool.size());
+    results.push_back(cur_result);
+    //std::cout<<" cur_total_score: "<<cur_score<<std::endl;
+    /*
+    if (cur_score < score){
+        score = cur_score;
+        result = cur_result;
+        best_alpha = cur_alpha;
+        best_alpha2 = cur_alpha2;
+    }*/
         //result = cur_result;
         //break;
    // }
-    }
- 
-    
+      }
     } //while(cur_alpha>1 && result.size() > degree);
+
+    if(scores.size() == 1){
+        result = results[0];
+        return;
+    }
+    float slope = (result_pool_sizes[0] - result_pool_sizes[result_pool_sizes.size()-1])/(scores[0] - scores[scores.size()-1]+1e-6);
+    float min_intercept = std::numeric_limits<float>::max();
+    for(int i =0; i< scores.size(); i++){
+        float intercept = result_pool_sizes[i] - slope*scores[i];
+        if(intercept <= min_intercept){
+            min_intercept = intercept;
+            score = scores[i];
+            result = results[i];
+            best_alpha = alphas[i];
+            best_alpha2 = alphas[i];
+        }
+    }   
+
+
+
     //std::cout<<" best_alpha: "<<best_alpha<<" best_alpha2: "<<best_alpha2;
    // if (result.size()>degree)
     //   result.resize(degree);
