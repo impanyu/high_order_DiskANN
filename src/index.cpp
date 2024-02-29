@@ -1310,7 +1310,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     }
  
     
-    if (cur_score <= first_score*rate && cur_score<score){
+    if (cur_score <= first_score*rate ){
         result = cur_result;
         score = cur_score;
         best_alpha = cur_alpha;
