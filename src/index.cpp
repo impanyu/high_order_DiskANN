@@ -1130,6 +1130,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
                                           InMemQueryScratch<T> *scratch,
                                           const tsl::robin_set<uint32_t> *const delete_set_ptr)
 {
+    
     if (pool.size() == 0)
         return;
 
@@ -1175,8 +1176,8 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     std::vector<float> result_pool_sizes;
 
 
-    for(;cur_alpha>=1; cur_alpha = cur_alpha - 0.04){
-        for(cur_alpha2 = _indexingAlphas[1]; cur_alpha2>=1 ; cur_alpha2 = cur_alpha2 - 0.04){
+    for(;cur_alpha>=1; cur_alpha = cur_alpha - 0.05){
+        for(cur_alpha2 = _indexingAlphas[1]; cur_alpha2>=1 ; cur_alpha2 = cur_alpha2 - 0.05){
     //while (cur_alpha <= _indexingAlphas[0] && result.size() < degree){
     cur_result.clear();
     //for (int i = 1; i<=2;i++){
@@ -1320,7 +1321,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     float min_intercept = std::numeric_limits<float>::max();
     for(int i =0; i< scores.size(); i++){
         float intercept = result_pool_sizes[i] - slope*scores[i];
-        if(intercept <= min_intercept){
+        if(intercept < min_intercept){
             min_intercept = intercept;
             score = scores[i];
             result = results[i];
@@ -1330,6 +1331,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
 
 
     //std::cout<<" best_alpha: "<<best_alpha<<" best_alpha2: "<<best_alpha2;
+    std::cout<<location<<endl;
    // if (result.size()>degree)
     //   result.resize(degree);
   /*
