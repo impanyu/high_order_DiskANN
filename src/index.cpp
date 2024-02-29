@@ -1248,9 +1248,9 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
                 cur_result.push_back(min_id);
                 //result_set.insert(min_id);
        
-                if (cur_result.size() > degree){
+                /*if (cur_result.size() > degree){
                     break;
-                }
+                }*/
             }
 
             if(layer[min_id] == alphas_length){
