@@ -1306,6 +1306,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         continue;
     }
     else {
+        result = cur_result;
         break;
     }
 
