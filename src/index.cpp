@@ -1305,9 +1305,9 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         result = cur_result;
         continue;
     }
-    /*else {
+    else {
         break;
-    }*/
+    }
 
     float cur_score = 0;
     
