@@ -1251,9 +1251,9 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
                 cur_result.push_back(min_id);
                 //result_set.insert(min_id);
        
-                /*if (cur_result.size() > degree){
+                if (cur_result.size() > degree){
                     break;
-                }*/
+                }
             }
 
             if(layer[min_id] == alphas_length){
@@ -1307,18 +1307,21 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     }*/
 
     float cur_score = 0;
-    for (auto iter = pool.begin();  iter != pool.end(); ++iter){
-        if (E[iter->id] == location) continue; 
-        uint32_t medoid = find_medoid(location, E, iter->id);             
-        cur_score += _data_store->get_distance(iter->id, medoid)/(iter->distance+1e-6);
+    if (cur_result.size() <= degree){
+        for (auto iter = pool.begin();  iter != pool.end(); ++iter){
+            if (E[iter->id] == location) continue; 
+            uint32_t medoid = find_medoid(location, E, iter->id);             
+            cur_score += _data_store->get_distance(iter->id, medoid)/(iter->distance+1e-6);
+        }
+        cur_score = cur_score/(pool.size());
+        //float cur_result_pool_size = ((float)cur_result.size())/pool.size();
+        /*if (first){
+            first_score = cur_score;  
+            first_result_pool_size = cur_result_pool_size;
+            first = false;
+        }*/
     }
-    cur_score = cur_score/(pool.size());
-    float cur_result_pool_size = ((float)cur_result.size())/pool.size();
-    /*if (first){
-        first_score = cur_score;  
-        first_result_pool_size = cur_result_pool_size;
-        first = false;
-    }*/
+    
     if (cur_score <= lowest_score || cur_result.size() > degree){
         lowest_score = cur_score;
     }
