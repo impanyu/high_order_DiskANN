@@ -1183,7 +1183,10 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
    //bool stop = false;
 
 
-    for(;cur_alpha>=1; cur_alpha = cur_alpha - 0.02){
+    for(;cur_alpha>=1; cur_alpha = cur_alpha - 0.05){
+        for(cur_alpha2 = 1.2; cur_alpha2 >=1; cur_alpha2 = cur_alpha2 -0.05){
+            if (cur_alpha >= _indexingAlphas[0]-(1e-6))
+              cur_alpha2 = _indexingAlphas[1];
         
 
     //while (cur_alpha <= _indexingAlphas[0] && result.size() < degree){
@@ -1248,9 +1251,9 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
                 cur_result.push_back(min_id);
                 //result_set.insert(min_id);
        
-                if (cur_result.size() > degree){
+                /*if (cur_result.size() > degree){
                     break;
-                }
+                }*/
             }
 
             if(layer[min_id] == alphas_length){
@@ -1295,11 +1298,11 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     }*/
     //else{
     //result = cur_result;
-    if (cur_result.size() > degree){
+    /*if (cur_result.size() > degree){
         result = cur_result;
         continue;
     }
-    /*else {
+    else {
         break;
     }*/
 
@@ -1316,7 +1319,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         first_result_pool_size = cur_result_pool_size;
         first = false;
     }*/
-    if (cur_score <= lowest_score){
+    if (cur_score <= lowest_score || cur_result.size() > degree){
         lowest_score = cur_score;
     }
  
@@ -1329,7 +1332,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     }
     else{
         //stop = true;
-        break;
+        return;//break;
     }
    // std::cout<<"alpha: "<<cur_alpha<<" alpha2: "<<cur_alpha2<<endl;
     //std::cout<<" cur_score: "<<cur_score<<" cur_size/pool_size: "<<((float)cur_result.size())/pool.size();
@@ -1352,6 +1355,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
    // }
       
       //if (stop) break;
+    }
     } //while(cur_alpha>1 && result.size() > degree);
  /*
     if(scores.size() == 1){
