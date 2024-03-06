@@ -1248,9 +1248,9 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
                     //std::cout<<"2";
                 }
                 else{
-                        medoids.push_back(pool[i].id);
-                        clusters.push_back({pool[i].id});
-                        //std::cout<<"3";
+                    medoids.push_back(pool[i].id);
+                    clusters.push_back({pool[i].id});
+                    //std::cout<<"3";
                }
             }
             else{
