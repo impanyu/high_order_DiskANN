@@ -1281,12 +1281,12 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
                 }  
             }
         }
-        if(cur_alpha2 > 1){
+        /*if(cur_alpha2 > 1){
            cur_alpha2 -= 0.1;
-        }
-        else if(cur_alpha > 1){
-            cur_alpha2 = 1.2;
-            cur_alpha -= 0.05;
+        }*/
+        if(cur_alpha > 1){
+            //cur_alpha2 = _indexingAlphas[1];
+            cur_alpha -= 0.1;
         }
         else{
             break;
