@@ -1233,7 +1233,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
 
     std::vector<uint32_t> medoids;
     std::vector<std::vector<uint32_t>> clusters;
-    while (medoids.size() > degree){
+    do{
  
         for (int i=0;i<pool.size();i++){
             if(i==0){
@@ -1291,7 +1291,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             break;
         }
         
-    }
+    }while (medoids.size() > degree);
 
     medoids.resize(degree);
     result = medoids;
