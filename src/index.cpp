@@ -1243,7 +1243,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             }
             else if(clusters.size() == 1){
                 float d = _data_store->get_distance(medoids[0], pool[i].id);
-                 if(pool[i].distance >= cur_alpha*d){
+                    if(pool[i].distance >= cur_alpha*d){
                     clusters[0].push_back(pool[i].id);
                     //std::cout<<"2";
                 }
@@ -1251,7 +1251,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
                     medoids.push_back(pool[i].id);
                     clusters.push_back({pool[i].id});
                     //std::cout<<"3";
-               }
+                }
             }
             else{
                 float min_d =  std::numeric_limits<float>::max();
