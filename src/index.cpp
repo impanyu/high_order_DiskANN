@@ -1213,7 +1213,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
   
 
     float cur_alpha = _indexingAlphas[0];
-    float cur_exp = _indexingAlphas[1]; 
+    float cur_alpha2 = _indexingAlphas[1]; 
 
     
     /*int l = 1;
@@ -1235,19 +1235,44 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     std::vector<std::vector<uint32_t>> clusters;
 
     for (int i=0;i<pool.size();i++){
-        if(i==0)
-            
-
-        float min = std::numeric_limits<float>::max();
-        int min_id = 0;
-        for (int i = 0; i < medoids.size(); i++){
-            float d = _data_store->get_distance(iter->id, medoids[i])/(iter->distance+1e-6);
-            if (d < min){
-                min = d;
-                min_id = i;
+        if(i==0){
+            clusters.push_back({pool[i].id});
+            medoids.push_back(pool[i].id);
+        }
+        else if(clusters.size() == 1){
+            float d = _data_store->get_distance(medoids[0], pool[i].id);
+            if(pool[i].distance >= cur_alpha*d){
+                clusters[0].push_back(pool[i].id);
+            }
+            else{
+                medoids.push_back(pool[i].id);
+                clusters.push_back({pool[i].id});
             }
         }
-        clusters[min_id].push_back(iter->id);
+        else{
+          float min_d =  std::numeric_limits<float>::max();
+          float second_min_d = min_d;
+          int min_id = 0;
+          for (int m = 0; m < medoids.size(); m++){
+            float d = _data_store->get_distance(medoids[m],pool[i].id);
+            if (d < min_d){
+                second_min_d = min_d;
+                min_d = d;
+                min_d = m;
+            }
+            else if ( d < second_min_d)
+            {
+                second_min_d = d;
+            }
+          }
+          if (second_min_d >= cur_alpha2*min_d){
+            clusters[min_id].push_back(pool[i].id);
+          }
+          else{
+            medoids.push_back(pool[i].id);
+            clusters.push_back({pool[i].id});
+          }  
+        }
     }
     
     //std::cout<<"pool size: "<<pool.size()<<std::endl;
