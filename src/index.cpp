@@ -1563,7 +1563,7 @@ template <typename T, typename TagT, typename LabelT> void Index<T, TagT, LabelT
      const unsigned NUM_RNDS = 2;
     float last_round_alpha = _indexingAlphas[0];
     _indexingAlphas[0] = 1;
-    _indexingAlphas[1] = 1;
+    //_indexingAlphas[1] = 1;
   
 for (uint32_t rnd_no = 0; rnd_no < NUM_RNDS; rnd_no++) {
 
