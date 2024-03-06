@@ -1259,7 +1259,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
                     if (d < min_d){
                         second_min_d = min_d;
                         min_d = d;
-                        min_d = m;
+                        min_id = m;
                     }
                     else if ( d < second_min_d)
                     {
