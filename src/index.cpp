@@ -1255,16 +1255,16 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             }
             else{
                 float min_d =  std::numeric_limits<float>::max();
-                float second_min_d = 0;
+                float second_min_d = std::numeric_limits<float>::max();
                 int min_id = 0;
                 for (int m = 0; m < medoids.size(); m++){
                     float d = _data_store->get_distance(medoids[m],pool[i].id);
-                    if (d < min_d){
+                    if (d <= min_d){
                         second_min_d = min_d;
                         min_d = d;
                         min_id = m;
                     }
-                    else if ( d < second_min_d)
+                    else if ( d <= second_min_d)
                     {
                         second_min_d = d;
                     }
