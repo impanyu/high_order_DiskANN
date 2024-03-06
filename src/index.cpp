@@ -1233,48 +1233,63 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
 
     std::vector<uint32_t> medoids;
     std::vector<std::vector<uint32_t>> clusters;
-
-    for (int i=0;i<pool.size();i++){
-        if(i==0){
-            clusters.push_back({pool[i].id});
-            medoids.push_back(pool[i].id);
-        }
-        else if(clusters.size() == 1){
-            float d = _data_store->get_distance(medoids[0], pool[i].id);
-            if(pool[i].distance >= cur_alpha*d){
-                clusters[0].push_back(pool[i].id);
+    while (medoids.size() > degree){
+ 
+        for (int i=0;i<pool.size();i++){
+            if(i==0){
+                clusters.push_back({pool[i].id});
+                medoids.push_back(pool[i].id);
+            }
+            else if(clusters.size() == 1){
+                float d = _data_store->get_distance(medoids[0], pool[i].id);
+                if(pool[i].distance >= cur_alpha*d){
+                    clusters[0].push_back(pool[i].id);
+                }
+                else{
+                    medoids.push_back(pool[i].id);
+                    clusters.push_back({pool[i].id});
+                }
+            }
+            else{
+            float min_d =  std::numeric_limits<float>::max();
+            float second_min_d = min_d;
+            int min_id = 0;
+            for (int m = 0; m < medoids.size(); m++){
+                float d = _data_store->get_distance(medoids[m],pool[i].id);
+                if (d < min_d){
+                    second_min_d = min_d;
+                    min_d = d;
+                    min_d = m;
+                }
+                else if ( d < second_min_d)
+                {
+                    second_min_d = d;
+                }
+            }
+            if (second_min_d >= cur_alpha2*min_d){
+                clusters[min_id].push_back(pool[i].id);
             }
             else{
                 medoids.push_back(pool[i].id);
                 clusters.push_back({pool[i].id});
+            }  
             }
+        }
+        if(cur_alpha2 > 1){
+           cur_alpha2 -= 0.1;
+        }
+        else if(cur_alpha > 1){
+            cur_alpha2 = 1.2;
+            cur_alpha -= 0.05;
         }
         else{
-          float min_d =  std::numeric_limits<float>::max();
-          float second_min_d = min_d;
-          int min_id = 0;
-          for (int m = 0; m < medoids.size(); m++){
-            float d = _data_store->get_distance(medoids[m],pool[i].id);
-            if (d < min_d){
-                second_min_d = min_d;
-                min_d = d;
-                min_d = m;
-            }
-            else if ( d < second_min_d)
-            {
-                second_min_d = d;
-            }
-          }
-          if (second_min_d >= cur_alpha2*min_d){
-            clusters[min_id].push_back(pool[i].id);
-          }
-          else{
-            medoids.push_back(pool[i].id);
-            clusters.push_back({pool[i].id});
-          }  
+            break;
         }
+        
     }
-    result = medoids.resize(degree);
+
+    medoids.resize(degree);
+    result = medoids;
     
     //std::cout<<"pool size: "<<pool.size()<<std::endl;
 
