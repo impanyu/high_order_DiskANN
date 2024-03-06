@@ -1216,7 +1216,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     float cur_exp = _indexingAlphas[1]; 
 
     
-    int l = 1;
+    /*int l = 1;
     int init_r = std::min(static_cast<std::size_t>(degree),pool.size())+1;
     int r = init_r;
     while (l<r){
@@ -1229,7 +1229,26 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             l = m+1;
         }
     }
-    k_medoids(std::min(l,init_r-1),location,pool,result);
+    k_medoids(std::min(l,init_r-1),location,pool,result);*/
+
+    std::vector<uint32_t> medoids;
+    std::vector<std::vector<uint32_t>> clusters;
+
+    for (int i=0;i<pool.size();i++){
+        if(i==0)
+            
+
+        float min = std::numeric_limits<float>::max();
+        int min_id = 0;
+        for (int i = 0; i < medoids.size(); i++){
+            float d = _data_store->get_distance(iter->id, medoids[i])/(iter->distance+1e-6);
+            if (d < min){
+                min = d;
+                min_id = i;
+            }
+        }
+        clusters[min_id].push_back(iter->id);
+    }
     
     //std::cout<<"pool size: "<<pool.size()<<std::endl;
 
