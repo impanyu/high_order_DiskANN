@@ -1274,7 +1274,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
           }  
         }
     }
-    result = medoids;
+    result = medoids.resize(degree);
     
     //std::cout<<"pool size: "<<pool.size()<<std::endl;
 
