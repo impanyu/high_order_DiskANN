@@ -1241,10 +1241,10 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
                 medoids.push_back(pool[i].id);
                 //std::cout<<"1";
             }
-            else if(clusters.size() == 1){
+            /*else if(clusters.size() == 1){
                 float d = _data_store->get_distance(medoids[0], pool[i].id);
                 
-            }
+            }*/
             else{
                 float min_d =  std::numeric_limits<float>::max();
                 float second_min_d = min_d;
