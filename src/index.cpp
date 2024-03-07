@@ -1188,7 +1188,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
               cur_alpha2 = _indexingAlphas[1];
         else
               cur_alpha2 = 1.2;*/
-        for(; cur_alpha >=1; cur_alpha = cur_alpha -0.05){
+        for(; cur_alpha >=1; cur_alpha = cur_alpha -0.1){
           
         
 
@@ -1267,9 +1267,9 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             int i = 0;
             for (auto iter = pool.begin();  iter != pool.end(); ++iter){
                 if (MST.find(iter->id) != MST.end()) continue;
-                float c = alphas[layer[min_id]] * (1+(2*iter->distance/pool[pool.size()-1].distance-1)*rate);
+                //float c = alphas[layer[min_id]] * (1+(2*iter->distance/pool[pool.size()-1].distance-1)*rate);
                 //float c = alphas[layer[min_id]] * (1+(2*(float)i/pool.size()-1)*rate);
-                auto d = _data_store->get_distance(iter->id, min_id) * c;
+                auto d = _data_store->get_distance(iter->id, min_id) * alphas[layer[min_id]];
                 if (d < C[iter->id]){
                     C[iter->id] = d;
                     E[iter->id] = min_id;
