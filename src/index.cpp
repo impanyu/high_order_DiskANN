@@ -1293,7 +1293,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         }
         
     }while (medoids.size() > degree);
-    std::cout<<location<<"medoids size: "<<medoids.size()<<std::endl;
+    //std::cout<<location<<"medoids size: "<<medoids.size()<<std::endl;
     
     result = medoids;
     
