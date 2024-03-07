@@ -1219,7 +1219,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     
     for (auto iter = pool.begin();  iter != pool.end(); ++iter){
  
-        C[iter->id] = iter->distance;// _data_store->get_distance(iter->id, location);
+        C[iter->id] = std::pow(iter->distance,rate);// _data_store->get_distance(iter->id, location);
         E[iter->id] = location;
         layer[iter->id] = 1;
     }
