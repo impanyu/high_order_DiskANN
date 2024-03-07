@@ -1307,6 +1307,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     //else{
     //result = cur_result;
     if (cur_result.size() > degree){
+        cur_result.resize(degree);
         result = cur_result;
         continue;
     }
