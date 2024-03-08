@@ -1189,7 +1189,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
               cur_alpha2 = _indexingAlphas[1];
         else
               cur_alpha2 = 1.2;*/
-        for(; cur_alpha >=1; cur_alpha = cur_alpha -0.1){
+    for(; cur_alpha >=1; cur_alpha = cur_alpha -0.1){
           
         
 
@@ -1317,6 +1317,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         break;
     }
 
+   /*
     float cur_score = 0;
     
     for (auto iter = pool.begin();  iter != pool.end(); ++iter){
@@ -1332,7 +1333,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         first = false;
     }*/
     
-
+    /*
     if (cur_score <= lowest_score){
         lowest_score = cur_score;
     }
