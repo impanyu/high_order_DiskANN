@@ -1166,7 +1166,8 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
    //float cur_alpha = 1;
     float cur_alpha = _indexingAlphas[0];
     float cur_alpha2 = _indexingAlphas[1];
-    float rate = _indexingAlphas[3];
+    float slope = _indexingAlphas[3];
+    float non_linear = _indexingAlphas[4];
     std::vector<uint32_t> cur_result;
     float score = std::numeric_limits<float>::max();
     float best_alpha = cur_alpha;
@@ -1269,7 +1270,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
                 if (MST.find(iter->id) != MST.end()) continue;
                 //float c = alphas[layer[min_id]] * (1+(2*iter->distance/pool[pool.size()-1].distance-1)*rate);
                 //float c = alphas[layer[min_id]] * (1+(2*(float)i/pool.size()-1)*rate);
-                float c =   alphas[layer[min_id]] * (1-(iter->distance/pool[pool.size()-1].distance-1)*rate);
+                float c =   alphas[layer[min_id]] * (1-( std::pow(iter->distance/pool[pool.size()-1].distance,non_linear)*2-1)*rate);
                 auto d = _data_store->get_distance(iter->id, min_id) * c;
                 if (d < C[iter->id]){
                     C[iter->id] = d;
