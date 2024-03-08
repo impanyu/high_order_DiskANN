@@ -1250,7 +1250,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             MST.insert(min_id);
             
             layer[min_id] = layer[E[min_id]]+1;
-
+            
             if(layer[min_id] == 1 ){
                 cur_result.push_back(min_id);
                 //result_set.insert(min_id);
