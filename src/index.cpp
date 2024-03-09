@@ -1270,7 +1270,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
                 if (MST.find(iter->id) != MST.end()) continue;
                 //float c = alphas[layer[min_id]] * (1+(2*iter->distance/pool[pool.size()-1].distance-1)*rate);
                 //float c = alphas[layer[min_id]] * (1+(2*(float)i/pool.size()-1)*rate);
-                float ratio = (float)i/(pool.size()-1);
+                float ratio = iter->distance/pool[pool.size()-1].distance;
                 float c =   alphas[layer[min_id]] * (1-( std::pow(ratio,non_linear)*2-1)*slope);
                 auto d = _data_store->get_distance(iter->id, min_id) * c;
                 if (d < C[iter->id]){
