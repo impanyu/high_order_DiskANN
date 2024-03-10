@@ -1188,6 +1188,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
    }
    int final_size = std::min(alphas_length, int(pool.size()));
    result.resize(final_size);
+   cout<<"final size: "<<final_size<<endl;  
 
    return;
 
