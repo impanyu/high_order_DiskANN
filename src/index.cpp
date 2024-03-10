@@ -1628,7 +1628,7 @@ for (uint32_t rnd_no = 0; rnd_no < NUM_RNDS; rnd_no++) {
     for (int64_t node_ctr = 0; node_ctr < (int64_t)(visit_order.size()); node_ctr++)
     {
         auto node = visit_order[node_ctr];
-        if (_graph_store->get_neighbours((location_t)node).size() > 0）//_indexingRange)
+        if (_graph_store->get_neighbours((location_t)node).size() > 0）)//_indexingRange)
         {
             ScratchStoreManager<InMemQueryScratch<T>> manager(_query_scratch);
             auto scratch = manager.scratch_space();
