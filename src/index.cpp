@@ -1183,6 +1183,10 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
    //float first_result_pool_size = 0;
    //bool stop = false;
 
+   cur_result.resize(alphas_length);
+   return;
+
+
 
    /* for(;cur_alpha>=1; cur_alpha = cur_alpha - 0.1){
          if (cur_alpha >= _indexingAlphas[0]-(1e-6))
