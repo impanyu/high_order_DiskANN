@@ -1257,7 +1257,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
                 float min_d =  std::numeric_limits<float>::max();
                 float second_min_d = std::numeric_limits<float>::max();
                 int min_id = 0;
-                int min_r = 0;
+                float min_r = 0;
                 for (int m = 0; m < medoids.size(); m++){
                     float d = _data_store->get_distance(medoids[m],pool[i].id);
                     if (d <= min_d){
@@ -1265,14 +1265,14 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
                         min_d = d;
                         min_id = m;
                         min_r = _data_store->get_distance(medoids[m],location)/pool[i].distance;
-                        std::cout<<"m: "<<m<<" i: "<<i<<" "<<_data_store->get_distance(medoids[m],location)<<std::endl;
+                        //std::cout<<"m: "<<m<<" i: "<<i<<" "<<_data_store->get_distance(medoids[m],location)<<std::endl;
                     }
                     else if ( d <= second_min_d)
                     {
                         second_min_d = d;
                     }
                 }
-                
+                std::cout<<min_r<<std::endl;
                
                 if (second_min_d >= cur_alpha2*min_d || pool[i].distance >= cur_alpha*min_d){
                     clusters[min_id].push_back(pool[i].id);
