@@ -3650,9 +3650,6 @@ void Index<T, TagT, LabelT>::search_with_optimized_layout(const T *query, size_t
                 cc++;
             }
 
-            else{
-                retset.insert(Neighbor(id, -1));
-            }
 
             /*float dist = dist_fast->compare(query, data, norm, (uint32_t)_data_store->get_aligned_dim());
             Neighbor nn(id, dist);
@@ -3663,8 +3660,7 @@ void Index<T, TagT, LabelT>::search_with_optimized_layout(const T *query, size_t
 
     for (size_t i = 0; i < K; i++)
     {
-        if(retset[i].distance >= 0)
-            indices[i] = retset[i].id;
+        indices[i] = retset[i].id;
     }
 }
 
