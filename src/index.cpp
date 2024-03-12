@@ -1022,13 +1022,14 @@ std::pair<uint32_t, uint32_t> Index<T, TagT, LabelT>::iterate_to_fixed_point(
                     _data_store->prefetch_vector(nextn);
                 }
                 if(_data_store->get_distance(id,n) >= query_to_n*0.5 && _data_store->get_distance(id,n) <= query_to_n*2){
-                    dist_scratch.push_back(-1);
-                    cc++;
+                    float dd = _data_store->get_distance(aligned_query, id);
+                    dist_scratch.push_back(dd);
                     
                 }
                 else{
-                    float dd = _data_store->get_distance(aligned_query, id);
-                    dist_scratch.push_back(dd);
+                    dist_scratch.push_back(-1);
+                    cc++;
+                    
                 }
             }
             std::cout << "cc rate: " << (float)cc/id_scratch.size() << std::endl;
