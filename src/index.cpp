@@ -1264,7 +1264,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
                         second_min_d = min_d;
                         min_d = d;
                         min_id = m;
-                        min_r = _data_store->get_distance(medoids[m],location)/pool[i].distance;
+                        //min_r = _data_store->get_distance(medoids[m],location)/pool[i].distance;
                         //std::cout<<"m: "<<m<<" i: "<<i<<" "<<_data_store->get_distance(medoids[m],location)<<std::endl;
                     }
                     else if ( d <= second_min_d)
