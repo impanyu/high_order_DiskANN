@@ -3620,12 +3620,18 @@ void Index<T, TagT, LabelT>::search_with_optimized_layout(const T *query, size_t
     {
         auto nbr = retset.closest_unexpanded();
         auto n = nbr.id;
+        T *n_data = (T *)(_opt_graph + _node_size * n);
+        float n_norm = *n_data;
+        float query_to_n = dist_fast->compare(query, n_data, n_norm, (uint32_t)_data_store->get_aligned_dim());
+
         _mm_prefetch(_opt_graph + _node_size * n + _data_len, _MM_HINT_T0);
         neighbors = (uint32_t *)(_opt_graph + _node_size * n + _data_len);
         uint32_t MaxM = *neighbors;
         neighbors++;
         for (uint32_t m = 0; m < MaxM; ++m)
             _mm_prefetch(_opt_graph + _node_size * neighbors[m], _MM_HINT_T0);
+        
+        int cc = 0;
         for (uint32_t m = 0; m < MaxM; ++m)
         {
             uint32_t id = neighbors[m];
@@ -3635,15 +3641,29 @@ void Index<T, TagT, LabelT>::search_with_optimized_layout(const T *query, size_t
             T *data = (T *)(_opt_graph + _node_size * id);
             float norm = *data;
             data++;
-            float dist = dist_fast->compare(query, data, norm, (uint32_t)_data_store->get_aligned_dim());
+
+            float dist_to_n = dist_fast->compare(n_data,data, norm, (uint32_t)_data_store->get_aligned_dim());
+            if(query_to_n <= 2* dist_to_n && query_to_n >= 0.5 * dist_to_n)
+            {
+                float dist = dist_fast->compare(query, data, norm, (uint32_t)_data_store->get_aligned_dim());
+                retset.insert(Neighbor(id, dist));
+                cc++;
+            }
+
+            else{
+                retset.insert(Neighbor(id, -1));
+            }
+
+            /*float dist = dist_fast->compare(query, data, norm, (uint32_t)_data_store->get_aligned_dim());
             Neighbor nn(id, dist);
-            retset.insert(nn);
+            retset.insert(nn);*/
         }
     }
 
     for (size_t i = 0; i < K; i++)
     {
-        indices[i] = retset[i].id;
+        if(retset[i].distance >= 0)
+            indices[i] = retset[i].id;
     }
 }
 
