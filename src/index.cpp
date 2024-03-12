@@ -1011,6 +1011,7 @@ std::pair<uint32_t, uint32_t> Index<T, TagT, LabelT>::iterate_to_fixed_point(
         else
         {
             assert(dist_scratch.size() == 0);
+            int cc = 0;
             for (size_t m = 0; m < id_scratch.size(); ++m)
             {
                 uint32_t id = id_scratch[m];
@@ -1022,6 +1023,7 @@ std::pair<uint32_t, uint32_t> Index<T, TagT, LabelT>::iterate_to_fixed_point(
                 }
                 if(_data_store->get_distance(id,n) >= query_to_n*0.5 && _data_store->get_distance(id,n) <= query_to_n*2){
                     dist_scratch.push_back(-1);
+                    cc++;
                     
                 }
                 else{
@@ -1029,6 +1031,7 @@ std::pair<uint32_t, uint32_t> Index<T, TagT, LabelT>::iterate_to_fixed_point(
                     dist_scratch.push_back(dd);
                 }
             }
+            std::cout << "cc rate: " << (float)cc/id_scratch.size() << std::endl;
         }
         cmps += (uint32_t)id_scratch.size();
 
