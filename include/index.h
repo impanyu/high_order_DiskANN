@@ -264,9 +264,9 @@ template <typename T, typename TagT = uint32_t, typename LabelT = uint32_t> clas
                          InMemQueryScratch<T> *scratch);
 
 
-    void assign_to_clusters(int location, std::vector<Neighbor> &pool, std::vector<uint32_t> &medoids, std::vector<std::vector<int>> &clusters);
+    void assign_to_clusters(int location, std::vector<Neighbor> &pool, std::vector<uint32_t> &medoids, std::vector<std::vector<int>> &clusters,float cur_alpha);
     bool update_medoids(int location, std::vector<uint32_t> &medoids, std::vector<std::vector<int>> &clusters, float& total_distance);
-    float k_medoids(int k, int location, std::vector<Neighbor> &pool,std::vector<uint32_t> &result);
+    float k_medoids(int k, int location, std::vector<Neighbor> &pool,std::vector<uint32_t> &result,float cur_alpha);
     
     // Prunes candidates in @pool to a shorter list @result
     // @pool must be sorted before calling

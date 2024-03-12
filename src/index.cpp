@@ -1130,12 +1130,13 @@ void Index<T, TagT, LabelT>::search_for_point_and_prune(int location, uint32_t L
 }
 
 template <typename T, typename TagT, typename LabelT>
-void Index<T, TagT, LabelT>::assign_to_clusters(int location, std::vector<Neighbor> &pool, std::vector<uint32_t> &medoids, std::vector<std::vector<int>> &clusters){
+void Index<T, TagT, LabelT>::assign_to_clusters(int location, std::vector<Neighbor> &pool, std::vector<uint32_t> &medoids, std::vector<std::vector<int>> &clusters,float cur_alpha){
     clusters.clear();
     clusters.resize(medoids.size());
     for (auto iter = pool.begin();  iter != pool.end(); ++iter){
         float min = std::numeric_limits<float>::max();
         int min_id = 0;
+
         for (int i = 0; i < medoids.size(); i++){
             float d = _data_store->get_distance(iter->id, medoids[i])/(iter->distance+1e-6);
             if (d < min){
@@ -1143,7 +1144,18 @@ void Index<T, TagT, LabelT>::assign_to_clusters(int location, std::vector<Neighb
                 min_id = i;
             }
         }
-        clusters[min_id].push_back(iter->id);
+        if (iter->distance >= cur_alpha*min){
+            clusters[min_id].push_back(iter->id);
+                //std::cout<<"4";
+        }
+        else{
+            medoids.push_back(iter->id);
+            clusters.push_back({iter->id});
+            //std::cout<<"5"<<std::endl;
+        }  
+
+    
+        //clusters[min_id].push_back(iter->id);
     }
 }
 template <typename T, typename TagT, typename LabelT>
@@ -1179,9 +1191,9 @@ bool Index<T, TagT, LabelT>::update_medoids(int location, std::vector<uint32_t> 
 }
 
 template <typename T, typename TagT, typename LabelT>
-float Index<T, TagT, LabelT>::k_medoids(int k, int location, std::vector<Neighbor> &pool,std::vector<uint32_t> &result){
+float Index<T, TagT, LabelT>::k_medoids(int k, int location, std::vector<Neighbor> &pool,std::vector<uint32_t> &result, float cur_alpha){
     result.clear();
-    std::vector<int> vec;
+    /*std::vector<int> vec;
     for (int i = 0; i < pool.size(); i++){
         vec.push_back(i);
     }
@@ -1189,13 +1201,13 @@ float Index<T, TagT, LabelT>::k_medoids(int k, int location, std::vector<Neighbo
     for (int i = 0; i < k; i++){
         result.push_back(pool[vec[i]].id);
     }
-
+   */
     bool changed = false;
     std::vector<std::vector<int>> clusters;
     float total_distance = 0;
     do{
         
-        assign_to_clusters(location, pool, result, clusters);
+        assign_to_clusters(location, pool, result, clusters,cur_alpha);
         changed = update_medoids(location,  result, clusters, total_distance);
     }while(changed);
     return total_distance/pool.size();
@@ -1249,8 +1261,9 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
     k_medoids(std::min(l,init_r-1),location,pool,result);*/
 
     std::vector<uint32_t> medoids;
-    std::vector<std::vector<uint32_t>> clusters;
-
+    //std::vector<std::vector<uint32_t>> clusters;
+    k_medoids(0,location,pool,result,cur_alpha);
+    /*
     
     do{
 
@@ -1311,7 +1324,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
         /*if(cur_alpha2 > 1){
            cur_alpha2 -= 0.1;
         }*/
-        if(cur_alpha > 1){
+     /*   if(cur_alpha > 1){
             //cur_alpha2 = _indexingAlphas[1];
             cur_alpha -= 0.1;
         }
@@ -1319,10 +1332,10 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
             break;
         }
         
-    }while (medoids.size() > degree);
+    }while (medoids.size() > degree);*/
     //std::cout<<location<<"medoids size: "<<medoids.size()<<std::endl;
     
-    result = medoids;
+    //result = medoids;
     
     //std::cout<<"pool size: "<<pool.size()<<std::endl;
 
