@@ -923,7 +923,7 @@ std::pair<uint32_t, uint32_t> Index<T, TagT, LabelT>::iterate_to_fixed_point(
     {
         auto nbr = best_L_nodes.closest_unexpanded();
         auto n = nbr.id;
-        float query_to_n = _data_store->get_distance(aligned_query, n);
+        //float query_to_n = _data_store->get_distance(aligned_query, n);
 
         // Add node to expanded nodes to create pool for prune later
         if (!search_invocation)
@@ -1022,7 +1022,7 @@ std::pair<uint32_t, uint32_t> Index<T, TagT, LabelT>::iterate_to_fixed_point(
                     _data_store->prefetch_vector(nextn);
                 }
 
-                if (search_invocation){
+                /*if (search_invocation){
                     if(_data_store->get_distance(id,n) >= query_to_n*0.5 && _data_store->get_distance(id,n) <= query_to_n*2){
                         float dd = _data_store->get_distance(aligned_query, id);
                         dist_scratch.push_back(dd);
@@ -1032,22 +1032,19 @@ std::pair<uint32_t, uint32_t> Index<T, TagT, LabelT>::iterate_to_fixed_point(
                         dist_scratch.push_back(-1);       
                     }
                 }
-                else{
+                else{*/
                     float dd = _data_store->get_distance(aligned_query, id);
                     dist_scratch.push_back(dd);
-                }
+                //}
             }
-            if(search_invocation)
-                std::cout << "cc rate: " << (float)cc/id_scratch.size() << std::endl;
+         
         }
         cmps += (uint32_t)id_scratch.size();
 
         // Insert <id, dist> pairs into the pool of candidates
         for (size_t m = 0; m < id_scratch.size(); ++m)
         {
-            if(dist_scratch[m] <0){
-                continue;
-            }
+    
             best_L_nodes.insert(Neighbor(id_scratch[m], dist_scratch[m]));
         }
     }
@@ -1233,7 +1230,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
   
 
     float cur_alpha = _indexingAlphas[0];
-    float cur_alpha2 = _indexingAlphas[1]; 
+    //float cur_alpha2 = _indexingAlphas[1]; 
 
     
     /*int l = 1;
@@ -1253,7 +1250,16 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
 
     std::vector<uint32_t> medoids;
     std::vector<std::vector<uint32_t>> clusters;
+
+    
     do{
+
+        medoids.clear();
+        clusters.clear();
+        for(int i =0;i<alphas_length;i++){
+            clusters.push_back({pool[i].id});
+            medoids.push_back(pool[i].id);
+        } 
  
         for (int i=0;i<pool.size();i++){
             if(i==0){
@@ -3621,8 +3627,8 @@ void Index<T, TagT, LabelT>::search_with_optimized_layout(const T *query, size_t
         auto nbr = retset.closest_unexpanded();
         auto n = nbr.id;
         T *n_data = (T *)(_opt_graph + _node_size * n);
-        float n_norm = *n_data;
-        float query_to_n = dist_fast->compare(query, n_data, n_norm, (uint32_t)_data_store->get_aligned_dim());
+        //float n_norm = *n_data;
+        //float query_to_n = dist_fast->compare(query, n_data, n_norm, (uint32_t)_data_store->get_aligned_dim());
 
         _mm_prefetch(_opt_graph + _node_size * n + _data_len, _MM_HINT_T0);
         neighbors = (uint32_t *)(_opt_graph + _node_size * n + _data_len);
@@ -3642,20 +3648,20 @@ void Index<T, TagT, LabelT>::search_with_optimized_layout(const T *query, size_t
             float norm = *data;
             data++;
 
-            float dist_to_n = dist_fast->compare(n_data,data, norm, (uint32_t)_data_store->get_aligned_dim());
-            if(query_to_n >= dist_to_n)
-            {
-                float dist = dist_fast->compare(query, data, norm, (uint32_t)_data_store->get_aligned_dim());
-                retset.insert(Neighbor(id, dist));
-                cc++;
-            }
+            //float dist_to_n = dist_fast->compare(n_data,data, norm, (uint32_t)_data_store->get_aligned_dim());
+            //if(query_to_n >= dist_to_n)
+            //{
+            float dist = dist_fast->compare(query, data, norm, (uint32_t)_data_store->get_aligned_dim());
+            retset.insert(Neighbor(id, dist));
+                //cc++;
+            //}
 
 
             /*float dist = dist_fast->compare(query, data, norm, (uint32_t)_data_store->get_aligned_dim());
             Neighbor nn(id, dist);
             retset.insert(nn);*/
         }
-        std::cout<<(float)cc/MaxM<<std::endl;
+        //std::cout<<(float)cc/MaxM<<std::endl;
     }
 
     for (size_t i = 0; i < K; i++)
