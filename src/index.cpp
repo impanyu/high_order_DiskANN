@@ -1272,7 +1272,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
                         second_min_d = d;
                     }
                 }
-                std::cout<<min_r<<std::endl;
+                //std::cout<<min_r<<std::endl;
                
                 if (second_min_d >= cur_alpha2*min_d || pool[i].distance >= cur_alpha*min_d){
                     clusters[min_id].push_back(pool[i].id);
