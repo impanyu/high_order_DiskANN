@@ -1035,7 +1035,6 @@ std::pair<uint32_t, uint32_t> Index<T, TagT, LabelT>::iterate_to_fixed_point(
                 else{
                     float dd = _data_store->get_distance(aligned_query, id);
                     dist_scratch.push_back(dd);
-                
                 }
             }
             if(search_invocation)
