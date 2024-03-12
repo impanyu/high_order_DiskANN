@@ -1301,7 +1301,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
                 //std::cout<<min_r<<std::endl;
                
                 //if (second_min_d >= cur_alpha2*min_d || pool[i].distance >= cur_alpha*min_d){
-                 if (_data_store->get_distance(medoids[min_id],location)>pool[i].distance*cur_alpha2 && pool[i].distance >= cur_alpha*min_d){
+                 if (pool[i].distance >= cur_alpha*min_d){
                     clusters[min_id].push_back(pool[i].id);
                     //std::cout<<"4";
                 }
