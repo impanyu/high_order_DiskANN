@@ -1256,13 +1256,9 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
 
         medoids.clear();
         clusters.clear();
-        for(int i =0;i<alphas_length;i++){
-            clusters.push_back({pool[i].id});
-            medoids.push_back(pool[i].id);
-        } 
- 
+  
         for (int i=0;i<pool.size();i++){
-            if(i==0){
+            if(i<alphas_length){
                 clusters.push_back({pool[i].id});
                 medoids.push_back(pool[i].id);
                 //std::cout<<"1";
