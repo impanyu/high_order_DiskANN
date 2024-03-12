@@ -1282,6 +1282,7 @@ void Index<T, TagT, LabelT>::occlude_list(const uint32_t location, std::vector<N
                 //float c = alphas[layer[min_id]] * (1+(2*(float)i/pool.size()-1)*rate);
                 float ratio = iter->distance/pool[pool.size()-1].distance;
                 float c =   alphas[layer[min_id]] * (1+( std::pow(ratio,non_linear)-1)*slope);
+                c = std::max(c, alphas[layer[min_id]]);
                 auto d = _data_store->get_distance(iter->id, min_id) * c;
                 if (d < C[iter->id]){
                     C[iter->id] = d;
