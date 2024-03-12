@@ -923,6 +923,7 @@ std::pair<uint32_t, uint32_t> Index<T, TagT, LabelT>::iterate_to_fixed_point(
     {
         auto nbr = best_L_nodes.closest_unexpanded();
         auto n = nbr.id;
+        float query_to_n = _data_store->get_distance(aligned_query, n);
 
         // Add node to expanded nodes to create pool for prune later
         if (!search_invocation)
@@ -1019,8 +1020,14 @@ std::pair<uint32_t, uint32_t> Index<T, TagT, LabelT>::iterate_to_fixed_point(
                     auto nextn = id_scratch[m + 1];
                     _data_store->prefetch_vector(nextn);
                 }
-
-                dist_scratch.push_back(_data_store->get_distance(aligned_query, id));
+                if(_data_store->get_distance(id,n) >= query_to_n*0.5 && _data_store->get_distance(id,n) <= query_to_n*2){
+                    dist_scratch.push_back(-1);
+                    
+                }
+                else{
+                    float dd = _data_store->get_distance(aligned_query, id);
+                    dist_scratch.push_back(dd);
+                }
             }
         }
         cmps += (uint32_t)id_scratch.size();
@@ -1028,6 +1035,9 @@ std::pair<uint32_t, uint32_t> Index<T, TagT, LabelT>::iterate_to_fixed_point(
         // Insert <id, dist> pairs into the pool of candidates
         for (size_t m = 0; m < id_scratch.size(); ++m)
         {
+            if(dist_scratch[m] <0){
+                continue;
+            }
             best_L_nodes.insert(Neighbor(id_scratch[m], dist_scratch[m]));
         }
     }
