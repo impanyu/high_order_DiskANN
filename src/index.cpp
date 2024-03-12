@@ -3658,6 +3658,7 @@ void Index<T, TagT, LabelT>::search_with_optimized_layout(const T *query, size_t
             Neighbor nn(id, dist);
             retset.insert(nn);*/
         }
+        std::cout<<(float)cc/MaxM<<std::endl;
     }
 
     for (size_t i = 0; i < K; i++)
